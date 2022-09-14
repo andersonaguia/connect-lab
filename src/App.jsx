@@ -1,13 +1,21 @@
-import './App.css'
-
-import * as yup from 'yup'
-
+import { GlobalStyle } from './GlobalStyle/globalStyles'
+import { Header } from './components/header/Header'
+import { Main } from './components/Main/Main'
+import { Router } from './router/Router'
+import { BrowserRouter } from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
-      
-    </div>
+    <>
+      <GlobalStyle />
+      <BrowserRouter>
+        <Header />
+        <Main>
+          <Router/>
+        </Main>      
+      </BrowserRouter>
+       
+    </>
   )
 }
 
