@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { ImgStyled } from '../Img/Img'
-import { ShadowDivStyled } from '../Div'
+import { ShadowDivStyled } from './CardDispositivo.styles'
 import { H3Styled } from '../Title'
 
 export const CardDispositivos = ({ imagem, nome }) => {

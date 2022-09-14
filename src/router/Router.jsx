@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom"
 import { Login } from '../pages/Login'
 import { Cadastro } from '../pages/Cadastro'
-import { Inicio } from '../pages/Inicio'
+import { Inicio } from "../pages/Inicio/Inicio"
 import { Dispositivos } from '../pages/Dispositivos'
 import { Perfil } from "../pages/Perfil/Perfil"
 
