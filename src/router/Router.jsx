@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom"
-import { Login } from '../pages/Login'
-import { Cadastro } from '../pages/Cadastro'
+import { Login } from '../pages/Login/Login'
+import { Cadastro } from '../pages/Cadastro/Cadastro'
 import { Inicio } from "../pages/Inicio/Inicio"
 import { Dispositivos } from '../pages/Dispositivos/Dispositivos'
 import { Perfil } from "../pages/Perfil/Perfil"
