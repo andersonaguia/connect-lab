@@ -1,9 +1,9 @@
-import { CardDispositivos } from "../../components/Cards/CardDispositivo"
+import { CardDispositivos } from "../../components/Cards/Dispositivo/CardDispositivo"
 import { H2Styled, H3Styled} from "../../components/Title"
 import { SectionStyled , DivStyled, SectionStyledGrid} from "./Inicio.styles"
 import PropTypes from 'prop-types'
 
-export const Inicio = ({imagem, nome}) => {
+export const Inicio = () => {
     return(
         <DivStyled>
        
@@ -13,30 +13,27 @@ export const Inicio = ({imagem, nome}) => {
             <p>Sencação Térmica: 15 ºC - Precipitação: 0mm - Probabilidade de chuva: 0%</p>
         </SectionStyled>
         <SectionStyledGrid>            
-                <CardDispositivos imagem="teste" nome="Dispositivo 1" />            
-                <CardDispositivos imagem="teste" nome="Dispositivo 2" />            
-                <CardDispositivos imagem="teste" nome="Dispositivo 3" />            
-                <CardDispositivos imagem="teste" nome="Dispositivo 4" />            
-                <CardDispositivos imagem="teste" nome="Dispositivo 5" />            
-                <CardDispositivos imagem="teste" nome="Dispositivo 6" />            
-                <CardDispositivos imagem="teste" nome="Dispositivo 7" />            
-                <CardDispositivos imagem="teste" nome="Dispositivo 8" />            
-                <CardDispositivos imagem="teste" nome="Dispositivo 9" />            
-                <CardDispositivos imagem="teste" nome="Dispositivo 1" />            
-                <CardDispositivos imagem="teste" nome="Dispositivo 2" />            
-                <CardDispositivos imagem="teste" nome="Dispositivo 3" />            
-                <CardDispositivos imagem="teste" nome="Dispositivo 4" />            
-                <CardDispositivos imagem="teste" nome="Dispositivo 5" />            
-                <CardDispositivos imagem="teste" nome="Dispositivo 6" />            
-                <CardDispositivos imagem="teste" nome="Dispositivo 7" />            
-                <CardDispositivos imagem="teste" nome="Dispositivo 8" />            
-                <CardDispositivos imagem="teste" nome="Dispositivo 9" />            
+                <CardDispositivos imagem="teste" nome="Dispositivo 1" local="Casa" agrupamento="Quarto" estado="OFF"/>            
+                <CardDispositivos imagem="teste" nome="Dispositivo 2" local="Casa" agrupamento="Quarto" estado="OFF"/>            
+                <CardDispositivos imagem="teste" nome="Dispositivo 1" local="Casa" agrupamento="Quarto" estado="OFF"/>            
+                <CardDispositivos imagem="teste" nome="Dispositivo 1" local="Casa" agrupamento="Quarto" estado="OFF"/>            
+                <CardDispositivos imagem="teste" nome="Dispositivo 1" local="Casa" agrupamento="Quarto" estado="OFF"/>            
+                <CardDispositivos imagem="teste" nome="Dispositivo 1" local="Casa" agrupamento="Quarto" estado="OFF"/>            
+                <CardDispositivos imagem="teste" nome="Dispositivo 1" local="Casa" agrupamento="Quarto" estado="OFF"/>            
+                <CardDispositivos imagem="teste" nome="Dispositivo 1" local="Casa" agrupamento="Quarto" estado="OFF"/>            
+                <CardDispositivos imagem="teste" nome="Dispositivo 1" local="Casa" agrupamento="Quarto" estado="OFF"/>            
+                <CardDispositivos imagem="teste" nome="Dispositivo 1" local="Casa" agrupamento="Quarto" estado="OFF"/>            
+                <CardDispositivos imagem="teste" nome="Dispositivo 1" local="Casa" agrupamento="Quarto" estado="OFF"/>            
+                <CardDispositivos imagem="teste" nome="Dispositivo 1" local="Casa" agrupamento="Quarto" estado="OFF"/>            
+                <CardDispositivos imagem="teste" nome="Dispositivo 1" local="Casa" agrupamento="Quarto" estado="OFF"/>            
+                <CardDispositivos imagem="teste" nome="Dispositivo 1" local="Casa" agrupamento="Quarto" estado="OFF"/>            
+                <CardDispositivos imagem="teste" nome="Dispositivo 1" local="Casa" agrupamento="Quarto" estado="OFF"/>            
         </SectionStyledGrid>
        </DivStyled>
     )
 }
 
 Inicio.propTypes = {
-    imagem: PropTypes.string.isRequired,
-    nome: PropTypes.string.isRequired,
+    imagem: PropTypes.string,
+    nome: PropTypes.string,
 }
