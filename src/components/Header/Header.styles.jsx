@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components"
 
 export const HeaderStyled = styled.header`
     width: 100%;
@@ -7,7 +7,7 @@ export const HeaderStyled = styled.header`
     display: flex;
     justify-content: space-between;
     align-items: center;    
-    background-color: #FF8818;
+    background-color: green;
 `
 
 export const TitleStyled = styled.h1`

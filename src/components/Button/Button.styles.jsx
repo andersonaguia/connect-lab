@@ -8,7 +8,7 @@ export const ButtonStyled = styled.button`
     align-items: center;
     text-transform: uppercase;
     border-radius: 40px;
-    background-color: ${({ background })=> background};
+    background-color: green;
     color: #FFFFFF;
     border: none;
     cursor: pointer;
