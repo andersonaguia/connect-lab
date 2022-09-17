@@ -7,7 +7,7 @@ export const HeaderStyled = styled.header`
     display: flex;
     justify-content: space-between;
     align-items: center;    
-    background-color: ${({theme}) => theme.colors.brand.green};
+    background-color: ${({theme}) => theme.colors.brand.alerta};
 `
 
 export const TitleStyled = styled.h1`

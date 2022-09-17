@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const ButtonStyled = styled.button`
-    width: 91px;
+    padding: 0 10px 0 10px;
     height: 38px;
     display: flex;
     justify-content: center;
@@ -15,6 +15,5 @@ export const ButtonStyled = styled.button`
 
     &:hover{
         opacity: 0.8;
-    }
-    
+    }    
 `

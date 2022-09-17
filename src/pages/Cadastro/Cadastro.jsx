@@ -10,6 +10,8 @@ import * as yup from "yup";
 import { checkCep } from "../../utils/checkCEP";
 // import { useState } from "react";
 // import { createUser } from "../../utils/CreateUser";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
 YupPassword(yup)
 
@@ -43,14 +45,31 @@ const schema = yup.object({
   }).required();
 
 export const Cadastro = ({editar=false}) => {
-    const { register, handleSubmit, trigger, setValue, setFocus, formState:{ errors } } = useForm({
+    const { register, handleSubmit, trigger, setValue, setFocus, reset, formState:{ errors } } = useForm({
         resolver: yupResolver(schema)
     });
+
+    const toastStyle = {
+        theme: "dark",
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    }
+
+    const errorNotify = (message) => toast.error(message, { toastStyle });
+    const successNotify = (message) => toast.success(message, { toastStyle });
     
     // const [ loading, setLoading ] = useState(false)
     
-    const onSubmit = data => console.log(data);
-
+    const onSubmit = (data) => {
+        console.log(data)
+        successNotify("Dados cadastrados com sucesso!")
+        reset()
+    }
     const fillDataByCep = (cep) => {
         checkCep(cep)
         .then((response) => {
@@ -65,8 +84,7 @@ export const Cadastro = ({editar=false}) => {
                 setValue('userAddress.state', response.data.uf)
                 setValue('userAddress.city', response.data.localidade)
                 setFocus('userAddress.number')
-            }
-            
+            }            
         })
         .catch((error) => {
             console.error("Erro: ", error.response.data);
@@ -74,85 +92,82 @@ export const Cadastro = ({editar=false}) => {
     }
     
     return(
-        <SectionStyled>
-            <h2>{ editar ? "Editar" : "Cadastrar" }</h2>            
-            <FormStyled onSubmit={handleSubmit(onSubmit)}>
-                <DivStyled direction="row" gap="20px">                
-                    <DivStyled direction="column" gap="5px">
+        <SectionStyled>            
+            <h2>{ editar ? "Editar" : "Cadastrar" }</h2>  
+            <button onClick={()=> errorNotify("oops")}>toast</button>
+            <ToastContainer />          
+            <FormStyled onSubmit={handleSubmit(onSubmit)}>                
                         <DivStyled direction="column">
                             <label htmlFor="nome" >Nome completo*</label>
-                            <InputStyled id="nome" placeholder="Seu nome" width="358px" height="34px" {...register("fullName")}/>
-                            <span>{errors.fullName?.message}</span>
+                            <InputStyled id="nome" placeholder="Seu nome" {...register("fullName")}/>
+                            <span hidden="true">{errorNotify(errors.fullName?.message)}</span>                            
                         </DivStyled>
                         <DivStyled direction="column">
                             <label htmlFor="email" >E-mail*</label>
-                            <InputStyled id="email" placeholder="Seu e-mail" width="358px" height="34px" {...register("email")}/>
-                            <span>{errors.email?.message}</span>
+                            <InputStyled id="email" placeholder="Seu e-mail" {...register("email")}/>
+                            <span hidden="true">{errorNotify(errors.email?.message)}</span>
                         </DivStyled>                    
                         <DivStyled direction="column">
                             <label htmlFor="foto" >URL foto do perfil</label>
-                            <InputStyled id="foto" placeholder="Sua foto" width="358px" height="34px" {...register("photoUrl")}/>
-                            <span>{errors.photoUrl?.message}</span>
+                            <InputStyled id="foto" placeholder="Sua foto" {...register("photoUrl")}/>
+                            <span hidden="true">{errorNotify(errors.photoUrl?.message)}</span>
                         </DivStyled>
                         <DivStyled direction="column">
                             <label htmlFor="telefone" >Telefone</label>
-                            <InputStyled id="telefone" placeholder="Seu telefone" width="358px" height="34px" {...register("phone")}/>
-                            <span>{errors.phone?.message}</span>
+                            <InputStyled id="telefone" placeholder="Seu telefone" {...register("phone")}/>
+                            <span hidden="true">{errorNotify(errors.phone?.message)}</span>
                         </DivStyled>                   
                         <DivStyled direction="column">
                             <label htmlFor="senha" >Senha*</label>
-                            <InputStyled  id="senha" placeholder="Sua senha" width="358px" height="34px" {...register("password")}/>
-                            <span>{errors.password?.message}</span>
+                            <InputStyled  id="senha" placeholder="Sua senha" {...register("password")}/>
+                            <span hidden="true">{errorNotify(errors.password?.message)}</span>
                         </DivStyled>
                         <DivStyled direction="column">
                             <label htmlFor="confirmacao" >Confirmação de senha*</label>
-                            <InputStyled type="password" id="confirmacao" placeholder="Digite sua senha novamente" width="358px" height="34px" {...register("passwordConfirmation")}/>
-                            <span>{errors.passwordConfirmation?.message}</span>
+                            <InputStyled type="password" id="confirmacao" placeholder="Digite sua senha novamente" {...register("passwordConfirmation")}/>
+                            <span hidden="true">{errorNotify(errors.passwordConfirmation?.message)}</span>
                         </DivStyled>
-                    </DivStyled>           
-                    <DivStyled direction="column" gap="5px">
+                 
                         <DivStyled direction="column">
                             <label htmlFor="cep" >CEP*</label>
-                            <InputStyled type="text" id="cep" placeholder="Seu CEP" maxLength="8" width="358px" height="34px" {...register("userAddress.zipCode", {
+                            <InputStyled type="text" id="cep" placeholder="Seu CEP" maxLength="8" {...register("userAddress.zipCode", {
                                 onBlur: (e) => {
                                     trigger("userAddress.zipCode")
                                         .then(isValid => isValid && fillDataByCep(e.target.value))
                                 }
                             })}/>
-                            <span>{errors.userAddress?.zipCode?.message}</span>
+                            <span hidden="true">{errorNotify(errors.userAddress?.zipCode?.message)}</span>
                         </DivStyled>
                         <DivStyled direction="column">
                             <label htmlFor="endereco" >Logradouro/Endereço*</label>
-                            <InputStyled id="endereco" placeholder="Seu logradouro/endereço" width="358px" height="34px" {...register("userAddress.street")}/>
-                            <span>{errors.userAddress?.street?.message}</span>
+                            <InputStyled id="endereco" placeholder="Seu logradouro/endereço" {...register("userAddress.street")}/>
+                            <span hidden="true">{errorNotify(errors.userAddress?.street?.message)}</span>
                         </DivStyled>                   
                         <DivStyled direction="column">
                             <label htmlFor="cidade" >Cidade*</label>
-                            <InputStyled id="cidade" placeholder="Sua cidade" width="358px" height="34px" {...register("userAddress.city")}/>
-                            <span>{errors.userAddress?.city?.message}</span>
+                            <InputStyled id="cidade" placeholder="Sua cidade" {...register("userAddress.city")}/>
+                            <span hidden="true">{errorNotify(errors.userAddress?.city?.message)}</span>
                         </DivStyled>
                         <DivStyled direction="column">
                             <label htmlFor="estado" >Estado*</label>
-                            <InputStyled id="estado" placeholder="Seu estado" width="358px" height="34px" {...register("userAddress.state")}/>
-                            <span>{errors.userAddress?.state?.message}</span>
+                            <InputStyled id="estado" placeholder="Seu estado" {...register("userAddress.state")}/>
+                            <span hidden="true">{errorNotify(errors.userAddress?.state?.message)}</span>
                         </DivStyled>
                         <DivStyled direction="column">
                             <label htmlFor="complemento" >Complemento</label>
-                            <InputStyled id="complemento" placeholder="Seu complemento" width="358px" height="34px" {...register("userAddress.complement")}/>
-                            <span>{errors.userAddress?.complement?.message}</span>
+                            <InputStyled id="complemento" placeholder="Seu complemento" {...register("userAddress.complement")}/>
+                            <span hidden="true">{errorNotify(errors.userAddress?.complement?.message)}</span>
                         </DivStyled>                   
                         <DivStyled direction="column">
                             <label htmlFor="numero" >Número*</label>
-                            <InputStyled type="number" id="numero" placeholder="Seu número" width="358px" height="34px" {...register("userAddress.number")}/>
-                            <span>{errors.userAddress?.number?.message}</span>
+                            <InputStyled type="number" id="numero" placeholder="Seu número" {...register("userAddress.number")}/>
+                            <span hidden="true">{errorNotify(errors.userAddress?.number?.message)}</span>
                         </DivStyled>                   
                         <DivStyled direction="column">
                             <label htmlFor="bairro" >Bairro*</label>
-                            <InputStyled id="bairro" placeholder="Seu bairro" width="358px" height="34px" {...register("userAddress.neighborhood")}/>
-                            <span>{errors.userAddress?.neighborhood?.message}</span>
-                        </DivStyled>
-                    </DivStyled>  
-                </DivStyled>                              
+                            <InputStyled id="bairro" placeholder="Seu bairro" {...register("userAddress.neighborhood")}/>
+                            <span hidden="true">{errorNotify(errors.userAddress?.neighborhood?.message)}</span>                   
+                    </DivStyled>                              
                 <Button name="Cadastrar" type="submit" background="#333333"/>               
             </FormStyled>   
             <Link to="/login">Login</Link>             

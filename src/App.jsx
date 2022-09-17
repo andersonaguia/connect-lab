@@ -9,19 +9,16 @@ import { darkTheme } from './styles/darkTheme'
 // import { defaultTheme } from './styles/defaultTheme';
 
 function App() {
-  console.log("THEME: ", darkTheme)
   return (   
-    <BrowserRouter> 
-      <ThemeProvider theme={ darkTheme }>        
-                
+    <ThemeProvider theme={ darkTheme }>   
+      <BrowserRouter>               
           <Header /> 
           <Main>
             <Router/>
           </Main>   
-          <GlobalStyle />            
-       
-      </ThemeProvider> 
-      </BrowserRouter>         
+          <GlobalStyle />      
+      </BrowserRouter> 
+    </ThemeProvider>         
   )
 }
 export default App
