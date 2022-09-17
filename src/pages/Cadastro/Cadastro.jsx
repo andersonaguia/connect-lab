@@ -5,47 +5,31 @@ import PropTypes from 'prop-types'
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup'
-import YupPassword from "yup-password";
+import YupPassword from "yup-password"; 
 import * as yup from "yup";
-
-YupPassword(yup)
-// import { checkCep } from "../../utils/checkCEP";
-
-
+import { checkCep } from "../../utils/checkCEP";
+// import { useState } from "react";
 // import { createUser } from "../../utils/CreateUser";
 
-// const handleSubmit = (body, e) => {
-//     e.preventDefault()
-//     console.log(body)
-//     createUser(body)
-//     .then((response) => {
-//         console.log(response);
-//       })
-//       .catch((error) => {
-//         console.error("Erro: ", error.response.data);
-//       })
-// }
+YupPassword(yup)
 
 const schema = yup.object({
     email: yup.string().email('Digite um e-mail válido').required('Obrigatório informar o e-mail'),
     password: yup.string()
         .required('Obrigatório digitar uma senha')
         .min(8, 'Senha deve possuir ao menos 8 dígitos')
-          .minLowercase(1, 'Senha deve possuir uma letra minúscula')
-          .minUppercase(1, 'Senha deve possuir uma letra maiúscula')
-          .minNumbers(1, 'Senha deve possuir um numero')
-          .minSymbols(1, 'Senha deve possuir um caractere especial'),
+        .minLowercase(1, 'Senha deve possuir uma letra minúscula')
+        .minUppercase(1, 'Senha deve possuir uma letra maiúscula')
+        .minNumbers(1, 'Senha deve possuir um numero')
+        .minSymbols(1, 'Senha deve possuir um caractere especial'),
     passwordConfirmation: yup.string().required('Digite sua senha novamente')
         .oneOf([yup.ref('password'), null], 'Senhas digitadas não conferem'),
     fullName: yup.string().required('Obrigatório informar um nome'), 
     photoUrl: yup.string().url('Digite a URL da foto'),
     phone: yup.string(),
     userAddress: yup.object({
-        zipCode: yup.string().typeError('Obrigatório informar o CEP')
-        .required('Obrigatório informar o CEP')
-        .matches(/^[0-9]+$/, "Must be only digits")
-        .min(8, 'CEP deve conter 8 dígitos')
-        .max(8, 'CEP deve conter 8 dígitos'),
+        zipCode: yup.string().typeError().matches(/[0-9]{8}/, 'CEP deve conter 8 números')
+        .required('Obrigatório informar o CEP'),
         street: yup.string().required('Obrigatório informar o nome da rua'),    
         number: yup.number().typeError('Digite um número válido')
             .positive().typeError('Digite um número válido')
@@ -59,23 +43,36 @@ const schema = yup.object({
   }).required();
 
 export const Cadastro = ({editar=false}) => {
-    const { register, handleSubmit, formState:{ errors } } = useForm({
+    const { register, handleSubmit, trigger, setValue, setFocus, formState:{ errors } } = useForm({
         resolver: yupResolver(schema)
-      });
-    // const CEP = "58039050"
-    const registerObj = register()
-    console.log(registerObj)
+    });
+    
+    // const [ loading, setLoading ] = useState(false)
+    
     const onSubmit = data => console.log(data);
-    // const onSubmit = () => {
-    //     console.log(CEP)
-    //     checkCep(CEP)
-    //     .then((response)=>{
-    //         console.log(response)
-    //     })
-    //     .catch((error)=> {
-    //         console.log(error)
-    //     })
-    // }
+
+    const fillDataByCep = (cep) => {
+        checkCep(cep)
+        .then((response) => {
+            console.log(response.data)
+            if(response.data.erro === 'true'){
+                console.log(response.data.erro)
+                setFocus('useAddress.street')                
+            }else{
+                setValue('userAddress.city', response.data.localidade)
+                setValue('userAddress.street', response.data.logradouro)
+                setValue('userAddress.neighborhood', response.data.bairro)
+                setValue('userAddress.state', response.data.uf)
+                setValue('userAddress.city', response.data.localidade)
+                setFocus('userAddress.number')
+            }
+            
+        })
+        .catch((error) => {
+            console.error("Erro: ", error.response.data);
+        })
+    }
+    
     return(
         <SectionStyled>
             <h2>{ editar ? "Editar" : "Cadastrar" }</h2>            
@@ -116,7 +113,12 @@ export const Cadastro = ({editar=false}) => {
                     <DivStyled direction="column" gap="5px">
                         <DivStyled direction="column">
                             <label htmlFor="cep" >CEP*</label>
-                            <InputStyled type="number" id="cep" placeholder="Seu CEP" width="358px" height="34px" {...register("userAddress.zipCode", {...onblur((e)=>console.log("teste"))})}/>
+                            <InputStyled type="text" id="cep" placeholder="Seu CEP" maxLength="8" width="358px" height="34px" {...register("userAddress.zipCode", {
+                                onBlur: (e) => {
+                                    trigger("userAddress.zipCode")
+                                        .then(isValid => isValid && fillDataByCep(e.target.value))
+                                }
+                            })}/>
                             <span>{errors.userAddress?.zipCode?.message}</span>
                         </DivStyled>
                         <DivStyled direction="column">
