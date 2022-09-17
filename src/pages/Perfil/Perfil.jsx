@@ -1,7 +1,7 @@
 import { H2Styled, H3Styled } from "../../components/Title";
 import { SectionStyled, ImgStyled} from "./Perfil.styles";
 import { Link } from "react-router-dom";
-import { Button } from "../../components/Button/Button"
+import { Button } from "../../components/AppButton/Button"
 
 export const Perfil = () => {
     return(

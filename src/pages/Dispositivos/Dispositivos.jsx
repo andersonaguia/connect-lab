@@ -1,5 +1,5 @@
 import { DivStyled, CardStyled, ImgStyled, FormStyled, InputStyled } from "./Dispositivos.styles"
-import { Button } from '../../components/Button/Button' 
+import { Button } from '../../components/AppButton/Button' 
 export const Dispositivos = () => {
     return(
         <section>

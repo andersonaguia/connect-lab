@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { SectionStyled, ImgProdutoStyled, ImgStatusStyled, DivStyled } from './Detalhes.styles'
-import {Button} from '../../components/Button/Button'
+import {Button} from '../../components/AppButton/Button'
 
 export const Detalhes = ({nome, urlImagem, estado}) => {
     return(

@@ -1,5 +1,5 @@
-import { Button } from "../../components/Button/Button";
-import { InputStyled } from "../../components/Input/Input.styles";
+import { Button } from "../../components/AppButton/Button";
+import { InputStyled } from "../../components/AppInput/Input.styles";
 import { Link } from "react-router-dom";
 import { SectionStyled, DivStyled, FormStyled } from "./Login.styles";
 import PropTypes from 'prop-types'

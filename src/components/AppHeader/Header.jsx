@@ -1,6 +1,6 @@
 import { Nav } from "../Navbar/Nav"
 import { HeaderStyled, TitleStyled} from "./Header.styles"
-import { Button } from "../Button/Button";
+import { Button } from "../AppButton/Button";
 import { Link } from "react-router-dom";
 // import { useState, useEffect} from "react";
 
