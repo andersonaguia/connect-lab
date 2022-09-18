@@ -7,7 +7,7 @@ const headers = {
 }
 
 export const createUser = (body) => {
-    return axios.post(URL, body, headers).response
+    return axios.post(URL, body, headers)
 }
 
 
