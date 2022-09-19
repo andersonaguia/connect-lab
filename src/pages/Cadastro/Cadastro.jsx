@@ -222,7 +222,7 @@ export const Cadastro = ({editar=false}) => {
                             })}/>
                             <span hidden={true}>{toast.error(errors.userAddress?.neighborhood?.message)}</span>                   
                     </DivStyled>                              
-                <Button name="Cadastrar" type="submit" background="#333333"/>               
+                <Button type="submit">Cadastrar</Button>              
             </FormStyled>   
             <Link to="/login">Login</Link>             
         </SectionStyled>

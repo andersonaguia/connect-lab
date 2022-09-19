@@ -4,19 +4,21 @@ import { Main } from './components/AppMain/Main'
 import { Router } from './router/Router'
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
+import { AuthenticationProvider } from '../src/contexts/Authentication/AuthenticationProvider';
 // import { defaultTheme } from './styles/defaultTheme';
 import { darkTheme } from './styles/darkTheme'
-// import { defaultTheme } from './styles/defaultTheme';
 
 function App() {
   return (   
-    <ThemeProvider theme={ darkTheme }>   
-      <BrowserRouter>               
+    <ThemeProvider theme={ darkTheme }>
+      <GlobalStyle /> 
+      <BrowserRouter>  
+        <AuthenticationProvider>
           <Header /> 
-          <Main>
-            <Router/>
-          </Main>   
-          <GlobalStyle />      
+            <Main>
+              <Router/>
+            </Main> 
+        </AuthenticationProvider>                
       </BrowserRouter> 
     </ThemeProvider>         
   )

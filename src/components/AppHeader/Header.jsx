@@ -1,26 +1,27 @@
 import { Nav } from "../Navbar/Nav"
 import { HeaderStyled, TitleStyled} from "./Header.styles"
 import { Button } from "../AppButton/Button";
-import { Link } from "react-router-dom";
-// import { useState, useEffect} from "react";
+
+import { useAuthentication } from "../../contexts/Authentication/useAuthentication";
+import { Navigate } from "react-router-dom";
 
 export const Header = () => {
-    // const [ isLogged, setIsLogged] = useState(false)
-    
-    // useEffect(() => {  
-    //      setIsLogged(false) 
-    //    return () => {
-    //      <h1>carregando</h1>
-    //    }
-    // }, [isLogged])
-    const isLogged = true
+    const { isAuthenticated, handleLogout } = useAuthentication();
+
+    const handleClickAutenticacao = () => {
+        console.log(isAuthenticated)
+        if (isAuthenticated) {
+          handleLogout(); 
+          <Navigate to="/login"></Navigate>        
+        }        
+    };
 
     return(
         <HeaderStyled>
             <TitleStyled>connect lab</TitleStyled>
-            {
-                isLogged ? <Nav/> : <Link to="/login"><Button name="Login"/></Link>
-            }            
+            {            
+                isAuthenticated ? <Nav/> : <Button onclick={() => handleClickAutenticacao}>Login</Button>              
+            }           
         </HeaderStyled>
     )
 }

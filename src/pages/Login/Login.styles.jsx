@@ -10,12 +10,18 @@ export const SectionStyled = styled.section`
     gap: 10px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
-    background-color: #ffffff;
+    background-color: #ffffff;   
 `
 export const DivStyled = styled.div`
     display: flex;
-    flex-direction: ${({ direction })=> direction};
-    gap: 5px;    
+    flex-direction: column;
+    gap: 5px;   
+`
+
+export const DivName = styled.div`     
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
 `
 
 export const FormStyled = styled.form`
