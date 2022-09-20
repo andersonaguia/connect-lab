@@ -3,10 +3,11 @@ import { useState } from "react";
 import { AuthenticationContext } from "./AuthenticationContext";
 import { userLogin } from "../../utils/userLogin";
 import { toast } from 'react-toastify';
-import { Navigate } from "react-router-dom";
 
 export const AuthenticationProvider = ({ children }) => {
-  const [userData, setUserData] = useState(null);
+  const [ userData, setUserData ] = useState(null)
+  // const [ locals, setLocals ] = useState(null)
+
 
   const handleLogin = (data) => {     
     console.log(userData)
@@ -22,20 +23,17 @@ export const AuthenticationProvider = ({ children }) => {
         .catch((error) => {
             console.error("Erro: ", error.code)
             toast.error("Email ou senha incorretos")
-            setUserData(null)
-          
+            setUserData(null)          
         })  
         toast.promise(userLogin, {
             pending: "Fazendo login"
-        })
-              
+        })              
   };
 
   const handleLogout = () => {
-    setUserData(null);
-    <Navigate to="/login"/>
+    setUserData(null)    
   };
-
+  
   return (
     <AuthenticationContext.Provider
       value={{ isAuthenticated: userData, handleLogin, handleLogout }}

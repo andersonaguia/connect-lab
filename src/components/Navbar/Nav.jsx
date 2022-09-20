@@ -7,9 +7,8 @@ export const Nav = ()=> {
     const { isAuthenticated, handleLogout } = useAuthentication();
 
     const handleClickAutenticacao = () => {
-        console.log(isAuthenticated)
         if (isAuthenticated) {
-          handleLogout();         
+          handleLogout()       
         }        
     };
 

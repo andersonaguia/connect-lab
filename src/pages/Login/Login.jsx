@@ -25,7 +25,6 @@ export const Login = () => {
 
     const { isAuthenticated, handleLogin } = useAuthentication();
 
-
     const onSubmit = (data) => {        
         handleLogin(data)
     }
@@ -34,7 +33,7 @@ export const Login = () => {
         return(
             <Navigate to="/inicio"></Navigate>
         )        
-      }   
+    }   
 
     return(
         <SectionStyled>

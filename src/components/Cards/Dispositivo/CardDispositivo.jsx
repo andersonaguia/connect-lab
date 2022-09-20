@@ -1,24 +1,18 @@
 import PropTypes from 'prop-types'
-import { ShadowDivStyled, DivStyled, ImgProdutoStyled, ImgStatusStyled } from './CardDispositivo.styles'
+import { LiStyled, ImgProdutoStyled } from './CardDispositivo.styles'
 import { H3Styled } from '../../Title'
+import { Button } from '../../../components/AppButton/Button'
 
-export const CardDispositivos = ({ imagem, nome, local, agrupamento, estado }) => {
+export const CardDispositivo = ({ product }) => {
     return(
-        <ShadowDivStyled>
-            <ImgProdutoStyled src={imagem} alt="foto do produto"/>
-            <DivStyled>
-                <H3Styled>{ nome }</H3Styled> 
-                <p>{local} | {agrupamento} | {estado}</p>
-            </DivStyled>
-            <ImgStatusStyled src={estado} alt="status do dispositivo" />                    
-        </ShadowDivStyled>
+        <LiStyled>
+            <ImgProdutoStyled src={product.photoUrl} alt="foto do produto"/>
+            <H3Styled>{ product.name }</H3Styled> 
+            <Button onClick={()=> console.log(product)}>Adicionar</Button>        
+        </LiStyled>
     )
 }
 
-CardDispositivos.propTypes = {
-    imagem: PropTypes.string.isRequired,
-    nome: PropTypes.string.isRequired,
-    local: PropTypes.string.isRequired,
-    agrupamento: PropTypes.string.isRequired,
-    estado: PropTypes.string.isRequired
+CardDispositivo.propTypes = {
+    product: PropTypes.object.isRequired
 }

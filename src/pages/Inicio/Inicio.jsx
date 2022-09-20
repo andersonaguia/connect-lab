@@ -1,4 +1,4 @@
-import { CardDispositivos } from "../../components/Cards/Dispositivo/CardDispositivo"
+// import { CardDispositivo } from "../../components/Cards/Dispositivo/CardDispositivo"
 import { H2Styled, H3Styled} from "../../components/Title"
 import { SectionStyled , DivStyled, SectionStyledGrid } from "./Inicio.styles"
 import PropTypes from 'prop-types'
@@ -11,26 +11,24 @@ export const Inicio = () => {
     const { isAuthenticated } = useAuthentication();
     const [dataWheather, setDataWheather] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
-
-    console.log(isAuthenticated)
     
     useEffect(() => {        
         if(isAuthenticated){
             checkWheather(isAuthenticated.user?.userAddress?.city)
             .then((response) => {            
                  setDataWheather(response.data)
-                 console.log("CLIMA: ", dataWheather)
                  setIsLoading(false)
             })
             .catch((error) => {
                 console.log(error)
-                setDataWheather(null)
-                console.log(dataWheather)
+                setDataWheather(null)                
                 setIsLoading(false)
             })   
         }             
     }, [])
 
+    console.log(dataWheather)
+    
     if(isLoading){
         return <h2>Carregando dados...</h2>
     }
@@ -55,7 +53,7 @@ export const Inicio = () => {
                 <img src={`https://openweathermap.org/img/wn/${dataWheather.weather[0]?.icon}@4x.png`} alt="imagem clima" />
             </SectionStyled>
             <SectionStyledGrid>            
-                <CardDispositivos imagem="teste" nome="Dispositivo 1" local="Casa" agrupamento="Quarto" estado="OFF"/>           
+                {/* <CardDispositivo imagem="teste" nome="Dispositivo 1" local="Casa" agrupamento="Quarto" estado="OFF"/>            */}
             </SectionStyledGrid>
         </DivStyled>             
     )

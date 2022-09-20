@@ -14,7 +14,7 @@ export const Perfil = () => {
                 <H3Styled>Endereço</H3Styled>
                 <p>85500-000</p>
                 <p><small>Av. Antônio Lira, 751 - Ap 230 - Tambaú - João Pessoa - PB</small></p>
-                <Link to="/cadastro"><Button name="Editar"/></Link>                    
+                <Link to="/cadastro"><Button>Editar</Button></Link>                    
                 <Link to="/inicio">Sair</Link>                  
         </SectionStyled>
     )
