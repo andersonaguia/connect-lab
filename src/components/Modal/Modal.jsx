@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types'
 import { OverlayStyled, ModalStyled } from './Modal.styles'
+import { Button } from '../AppButton/Button'
+
 export const Modal = ({open, onClose, children}) => {
     if(!open){
         return null
@@ -7,9 +9,9 @@ export const Modal = ({open, onClose, children}) => {
 
     return(
         <OverlayStyled>
-            <ModalStyled>
-                <button onClick={onClose}>x</button>
-            {   children}
+            <ModalStyled>  
+                {children}
+                <Button onClick={onClose}>Cancelar</Button>
             </ModalStyled>
         </OverlayStyled>        
     )

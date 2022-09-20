@@ -1,16 +1,36 @@
 import PropTypes from 'prop-types'
-import { LiStyled, ImgProdutoStyled, FormStyled } from './CardDispositivo.styles'
+import { LiStyled, ImgProdutoStyled, FormStyled, SelectStyled, InputStyled } from './CardDispositivo.styles'
 import { H3Styled } from '../../Title'
 import { Button } from '../../../components/AppButton/Button'
 import { useState } from 'react'
 import { Modal } from '../../Modal/Modal'
 import { useForm } from "react-hook-form";
+import { useAuthentication } from '../../../contexts/Authentication/useAuthentication'
+import { addDevice } from '../../../utils/addDevice'
 
 export const CardDispositivo = ({ product, locals }) => {      
     const[ isOpen, setIsOpen ] = useState(false)
-    const { register, handleSubmit } = useForm()  
-    const onSubmit = (data) => {
-        console.log(data)
+    const { register, handleSubmit } = useForm() 
+    const { isAuthenticated } = useAuthentication() 
+
+    const onSubmit = (data) => {       
+             
+        const body = {
+            user: isAuthenticated.user._id,
+            device: product._id,
+            isOn: true,
+            local: data.place,
+            room: data.local
+        }
+       
+        addDevice(isAuthenticated.token, body)
+        
+            .then((response) => {
+                console.log(response)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }
 
     return(
@@ -24,16 +44,16 @@ export const CardDispositivo = ({ product, locals }) => {
                 <h2>{product.name}</h2>
                 <FormStyled onSubmit={handleSubmit(onSubmit)}>
                     <label htmlFor='place'>Local*</label>
-                    <select name='place' id='place' placeholder='Selecione o local' {...register('place')}>
+                    <SelectStyled name='place' id='place' placeholder='Selecione o local' {...register('place')}>
                         {
                             locals && locals.map((place) => (
                                 <option  key={place._id} value={place.description}>{place.description}</option>
                             )) 
                         }
-                    </select>
+                    </SelectStyled>
                     <label htmlFor='local'>Cômodo*</label>
-                    <input type='text' id='local' placeholder='Digite o nome do cômodo' {...register('local')}/>
-                    <Button type='submit'>Adicionar</Button>
+                    <InputStyled type='text' id='local' placeholder='Digite o nome do cômodo' {...register('local')}/>
+                    <Button type='submit'>Confirmar</Button>
                 </FormStyled>                
             </Modal>                           
         </>        

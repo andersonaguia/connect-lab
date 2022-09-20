@@ -26,3 +26,13 @@ export const FormStyled = styled.form`
     align-items: center;
     gap: 15px;
 `
+
+export const SelectStyled = styled.select`
+    width: 200px;
+    height: 30px;
+`
+
+export const InputStyled = styled.input`
+    width: 200px;
+    height: 30px;
+`

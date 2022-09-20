@@ -11,6 +11,11 @@ export const OverlayStyled = styled.div`
 `
 
 export const ModalStyled = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
     position: fixed;
     top: 50%;
     left: 50%;
