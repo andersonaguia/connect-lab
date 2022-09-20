@@ -18,3 +18,11 @@ export const ImgProdutoStyled = styled.img`
     width: 80px;
     height: 80px;
 `
+
+export const FormStyled = styled.form`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+`

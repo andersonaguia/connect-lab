@@ -5,8 +5,10 @@ import { Router } from './router/Router'
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { AuthenticationProvider } from '../src/contexts/Authentication/AuthenticationProvider';
+import { ProductsProvider } from '../src/contexts/Products/ProductsProvider';
 // import { defaultTheme } from './styles/defaultTheme';
 import { darkTheme } from './styles/darkTheme'
+
 
 function App() {
   return (   
@@ -15,9 +17,11 @@ function App() {
       <BrowserRouter>  
         <AuthenticationProvider>
           <Header /> 
+          <ProductsProvider>
             <Main>
               <Router/>
-            </Main> 
+            </Main>
+          </ProductsProvider>             
         </AuthenticationProvider>                
       </BrowserRouter> 
     </ThemeProvider>         

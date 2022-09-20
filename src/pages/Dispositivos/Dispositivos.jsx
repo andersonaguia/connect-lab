@@ -5,34 +5,30 @@ import { useState, useEffect } from "react";
 import { findAllDevices } from "../../utils/findAllDevices";
 import { CardDispositivo } from "../../components/Cards/Dispositivo/CardDispositivo";
 import { useForm } from "react-hook-form";
+import { useProducts } from "../../contexts/Products/useProducts";
 
 export const Dispositivos = () => {
-    const { register, handleSubmit, getValues} = useForm()
+    const { register, handleSubmit, getValues, reset} = useForm()
     const { isAuthenticated } = useAuthentication()
     const [ allDevices, setAllDevices ] = useState(null)
     const [ searchProducts, setSearchProducts ] = useState(null)
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(true)   
+    const { allPlaces } = useProducts()
 
     const onSubmit = (data) => {
-        console.log("NOME DO PRODUTO: ", data.productName)
         if(allDevices){            
-            setSearchProducts(allDevices.filter((device)=> device.name.toLowerCase().includes(data.productName.toLowerCase())))            
-        }else{
-            console.log("sem itens")
+            setSearchProducts(allDevices.filter((device)=> device.name.toLowerCase().includes(data.productName.toLowerCase()))) 
         }
-        console.log("PRODUTOS FILTRADOS: ", searchProducts)
+        !searchProducts && console.log("Nenhum produto encontrado")
     }
-    
-    const handleKeyDown = (event) => {
-        console.log(event.key)
-        if(event.key === 'Backspace' && allDevices.length < 23){
-            setSearchProducts(null)
-        }
+
+    const clearSearch = () => {
+        setSearchProducts(null)
+        reset()
     }
         
     useEffect(() => {
         if(searchProducts){
-            console.log("SEARCH PRODUCTS: ", searchProducts)
             searchProducts.length > 0 ? setAllDevices(searchProducts) : setSearchProducts(null)            
         }else{
             findAllDevices(isAuthenticated.token)
@@ -46,30 +42,31 @@ export const Dispositivos = () => {
         }                     
                           
     }, [searchProducts])
-
-    console.log("DEVICES: ", allDevices)
-
-    
     
     if(isLoading){
         <h2>Carregando dados...</h2>
     }
 
+    console.log("Locais: ", allPlaces)
+    
+
     return(
         <>
             <section>
                 <FormStyled onSubmit={handleSubmit(onSubmit)}>
-                    <InputStyled type="text" placeholder="Digite o nome do dispositivo" onKeyDown={handleKeyDown} {...register("productName", {onChange: (e) => {
+                    <InputStyled type="text" placeholder="Digite o nome do dispositivo" {...register("productName", {onChange: (e) => {
                        onSubmit(getValues())
                     }})}/>
-                    <Button type="submit">Buscar</Button>
+                    {
+                        searchProducts ? <Button onClick={clearSearch}>Limpar</Button> : <Button type="submit">Buscar</Button>
+                    }
                 </FormStyled>
             </section>
             <UlStyled>
                 {
                     allDevices ? 
                         allDevices.map((product) => (
-                            <CardDispositivo key={product._id} product={product}/>
+                            <CardDispositivo key={product._id} product={product} locals={allPlaces}/>
                         )): <h2>Carregando produtos...</h2>
                 }
             </UlStyled>
