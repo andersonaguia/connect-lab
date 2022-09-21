@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { ProductsContext } from "./ProductsContext";
 import { useAuthentication } from "../Authentication/useAuthentication";
 import { findLocals } from "../../utils/findLocals";
+import { deleteDevice } from "../../utils/deleteDevice";
 
 export const ProductsProvider = ({ children }) => {
     const { isAuthenticated } = useAuthentication()
@@ -18,14 +19,26 @@ export const ProductsProvider = ({ children }) => {
                 console.log(error)
             }) 
         }       
-    };
+    }
+
+    const deleteUserDevice = (token, id) => {
+        deleteDevice(token, id)
+            .then((response) => {
+                console.log(response)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+        
+
+    }
 
     useEffect(() => {
         handleLocals()        
     }, [isAuthenticated])
 
     return (
-        <ProductsContext.Provider value={{ allPlaces: locals , handleLocals}}>
+        <ProductsContext.Provider value={{ allPlaces: locals , handleLocals, deleteUserDevice}}>
            {children}
         </ProductsContext.Provider>
     )

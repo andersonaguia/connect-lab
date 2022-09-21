@@ -13,23 +13,20 @@ export const CardDispositivo = ({ product, locals }) => {
     const { register, handleSubmit } = useForm() 
     const { isAuthenticated } = useAuthentication() 
 
-    const onSubmit = (data) => {       
-             
+    const onSubmit = (data) => {              
         const body = {
             user: isAuthenticated.user._id,
             device: product._id,
-            isOn: true,
+            is_on: true,
             local: data.place,
             room: data.local
-        }
-       
-        addDevice(isAuthenticated.token, body)
-        
+        }       
+        addDevice(isAuthenticated.token, body)        
             .then((response) => {
-                console.log(response)
+                setIsOpen(false)
             })
             .catch((error) => {
-                console.log(error)
+                console.log("ERRO: ", error)
             })
     }
 
@@ -47,7 +44,7 @@ export const CardDispositivo = ({ product, locals }) => {
                     <SelectStyled name='place' id='place' placeholder='Selecione o local' {...register('place')}>
                         {
                             locals && locals.map((place) => (
-                                <option  key={place._id} value={place.description}>{place.description}</option>
+                                <option  key={place._id} value={place._id}>{place.description}</option>
                             )) 
                         }
                     </SelectStyled>

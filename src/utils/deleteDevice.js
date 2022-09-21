@@ -1,13 +1,14 @@
 import axios from "axios"
 
-const URL = `https://connectlab.onrender.com/userDevices`
 
-export const addDevice = (token, data) => {   
+
+export const deleteDevice = (token, id) => {  
+    const URL = `https://connectlab.onrender.com/userDevices/${id}` 
     const headerConfig = {
         headers:{
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
         }        
     }
-    return axios.post(URL, JSON.stringify(data), headerConfig)
+    return axios.delete(URL, headerConfig)
 }

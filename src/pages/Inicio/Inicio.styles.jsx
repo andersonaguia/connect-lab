@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const SectionStyled = styled.section`
-    width: 1200px;
+    width: 80%;
     height: 215px;
     padding: 10px;
     display: flex;
@@ -19,14 +19,24 @@ export const SectionStyled = styled.section`
   
 `
 export const DivStyled = styled.div`
+    width: 100%;
+    padding: 0 20px 0 20px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
 `
 export const SectionStyledGrid = styled.section`
-    display: grid;
-    grid-template-columns: repeat(3,1fr);
-    margin-top: 110px;
-    gap: 20px;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 80px;
+`
+export const UlStyled = styled.ul`
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    gap: 20px;
 `

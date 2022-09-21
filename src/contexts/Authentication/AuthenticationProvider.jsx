@@ -6,8 +6,6 @@ import { toast } from 'react-toastify';
 
 export const AuthenticationProvider = ({ children }) => {
   const [ userData, setUserData ] = useState(null)
-  // const [ locals, setLocals ] = useState(null)
-
 
   const handleLogin = (data) => {     
     console.log(userData)
