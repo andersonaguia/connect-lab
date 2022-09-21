@@ -3,6 +3,7 @@ import { useState } from "react";
 import { AuthenticationContext } from "./AuthenticationContext";
 import { userLogin } from "../../utils/userLogin";
 import { toast } from 'react-toastify';
+import { redirect } from "react-router-dom";
 
 export const AuthenticationProvider = ({ children }) => {
   const [ userData, setUserData ] = useState(null)
@@ -29,9 +30,10 @@ export const AuthenticationProvider = ({ children }) => {
   };
 
   const handleLogout = () => {
-    setUserData(null)    
-  };
-  
+    setUserData(null)
+    redirect('/login')
+  }
+
   return (
     <AuthenticationContext.Provider
       value={{ isAuthenticated: userData, handleLogin, handleLogout }}

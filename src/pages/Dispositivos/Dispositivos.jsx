@@ -41,7 +41,7 @@ export const Dispositivos = () => {
             })
         }                     
                           
-    }, [searchProducts])
+    }, [searchProducts, isAuthenticated])
     
     if(isLoading){
         <h2>Carregando dados...</h2>

@@ -8,12 +8,19 @@ import { useState, useEffect } from "react";
 import { convertTemp } from "../../utils/convertTemp";
 import { findUserDevices } from "../../utils/findUserDevices";
 import { CardUserDevice } from "../../components/Cards/UserDevice/CardUserDevice";
+import { ButtonSecondary } from "../../components/AppButton/Secondary/ButtonSecondary";
 
 export const Inicio = () => {
     const { isAuthenticated } = useAuthentication();
     const [dataWheather, setDataWheather] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
     const [ userDevices, setUserDevices ] = useState(null)
+    const [ userLocals, setUserLocals ] = useState(['Todos'])
+    const [ search, setSearch ] = useState(null)
+    
+    const handleSearch = (item) => {        
+        setSearch(item)        
+    }
 
     useEffect(() => {        
         if(isAuthenticated){
@@ -30,17 +37,23 @@ export const Inicio = () => {
             
             findUserDevices(isAuthenticated.token, isAuthenticated.user._id)
             .then((response) => {
-                setUserDevices(response.data)
-                
+                if(!search){
+                    setUserLocals((locals => [...locals, ...new Set(response.data.map((device) => device.local.description))]))
+                    setSearch('Todos')
+                }               
+                search === 'Todos' ? setUserDevices(response.data) : setUserDevices(response.data.filter((device) => device.local.description === search))               
             })
             .catch((error) => {
                 console.log(error)
             })
         }             
-    }, [])
+    }, [isAuthenticated, search])
 
     console.log(dataWheather)
     console.log("DISPOSITIVOS: ", userDevices)
+    console.log("LOCAIS: ", userLocals)    
+    console.log(search)
+
     if(isLoading){
         return <h2>Carregando dados...</h2>
     }
@@ -64,7 +77,15 @@ export const Inicio = () => {
                 </ul>               
                 <img src={`https://openweathermap.org/img/wn/${dataWheather.weather[0]?.icon}@4x.png`} alt="imagem clima" />
             </SectionStyled>
-            <SectionStyledGrid>            
+            <UlStyled>
+                {
+                    userLocals.length > 1 &&
+                        userLocals.map((place) => (
+                            <ButtonSecondary key={place._id} whenFiltering={handleSearch} item={place}>{place}</ButtonSecondary>
+                        ))
+                } 
+            </UlStyled>
+            <SectionStyledGrid>
                 <UlStyled>
                     {
                         userDevices ? 

@@ -29,8 +29,6 @@ export const ProductsProvider = ({ children }) => {
             .catch((error) => {
                 console.log(error)
             })
-        
-
     }
 
     useEffect(() => {
