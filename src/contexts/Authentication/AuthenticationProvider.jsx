@@ -3,13 +3,15 @@ import { useState } from "react";
 import { AuthenticationContext } from "./AuthenticationContext";
 import { userLogin } from "../../utils/userLogin";
 import { toast } from 'react-toastify';
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const AuthenticationProvider = ({ children }) => {
   const [ userData, setUserData ] = useState(null)
+  const [ edit, setEdit ] = useState(false);
+
+  const navigate = useNavigate()
 
   const handleLogin = (data) => {     
-    console.log(userData)
     userLogin(data)
         .then((response) => {
             toast.success("Sucesso! Entrando no site")
@@ -31,12 +33,16 @@ export const AuthenticationProvider = ({ children }) => {
 
   const handleLogout = () => {
     setUserData(null)
-    redirect('/login')
+    navigate('/login')    
+  }
+
+  const handleToEdit = () => {
+    setEdit(!edit);
   }
 
   return (
     <AuthenticationContext.Provider
-      value={{ isAuthenticated: userData, handleLogin, handleLogout }}
+      value={{ isAuthenticated: userData, toEdit: edit, handleLogin, handleLogout, handleToEdit }}
     >
       {children}
     </AuthenticationContext.Provider>

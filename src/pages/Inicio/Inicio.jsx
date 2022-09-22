@@ -1,6 +1,6 @@
 // import { CardDispositivo } from "../../components/Cards/Dispositivo/CardDispositivo"
 import { H2Styled, H3Styled} from "../../components/Title"
-import { SectionStyled , DivStyled, SectionStyledGrid, UlStyled } from "./Inicio.styles"
+import { SectionStyled , DivStyled, SectionStyledGrid, UlStyled, UlButtonStyled } from "./Inicio.styles"
 import PropTypes from 'prop-types'
 import { useAuthentication } from "../../contexts/Authentication/useAuthentication";
 import { checkWheather } from "../../utils/checkWheather";
@@ -17,7 +17,7 @@ export const Inicio = () => {
     const [ userDevices, setUserDevices ] = useState(null)
     const [ userLocals, setUserLocals ] = useState(['Todos'])
     const [ search, setSearch ] = useState(null)
-    
+
     const handleSearch = (item) => {        
         setSearch(item)        
     }
@@ -77,14 +77,14 @@ export const Inicio = () => {
                 </ul>               
                 <img src={`https://openweathermap.org/img/wn/${dataWheather.weather[0]?.icon}@4x.png`} alt="imagem clima" />
             </SectionStyled>
-            <UlStyled>
+            <UlButtonStyled>
                 {
                     userLocals.length > 1 &&
                         userLocals.map((place) => (
                             <ButtonSecondary key={place._id} whenFiltering={handleSearch} item={place}>{place}</ButtonSecondary>
                         ))
                 } 
-            </UlStyled>
+            </UlButtonStyled>
             <SectionStyledGrid>
                 <UlStyled>
                     {

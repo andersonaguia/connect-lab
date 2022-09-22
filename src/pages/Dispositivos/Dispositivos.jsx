@@ -14,6 +14,7 @@ export const Dispositivos = () => {
     const [ searchProducts, setSearchProducts ] = useState(null)
     const [isLoading, setIsLoading] = useState(true)   
     const { allPlaces } = useProducts()
+    const [ backspace, setBackspace ] = useState(null)
 
     const onSubmit = (data) => {
         if(allDevices){            
@@ -22,12 +23,20 @@ export const Dispositivos = () => {
         !searchProducts && console.log("Nenhum produto encontrado")
     }
 
+    const handleBackspace = (event) => {
+        event.keyCode === 8 && setBackspace(event.keyCode)       
+    }    
+   
     const clearSearch = () => {
         setSearchProducts(null)
         reset()
     }
         
-    useEffect(() => {
+    useEffect(() => {   
+        if(backspace === 8 && getValues().productName === ''){
+            setSearchProducts(null)
+        } 
+
         if(searchProducts){
             searchProducts.length > 0 ? setAllDevices(searchProducts) : setSearchProducts(null)            
         }else{
@@ -39,22 +48,19 @@ export const Dispositivos = () => {
             .catch((error) => {
                 console.log("ERRO: ", error)
             })
-        }                     
+        }             
                           
     }, [searchProducts, isAuthenticated])
     
     if(isLoading){
         <h2>Carregando dados...</h2>
-    }
-
-    console.log("Locais: ", allPlaces)
-    
+    }    
 
     return(
         <>
             <section>
                 <FormStyled onSubmit={handleSubmit(onSubmit)}>
-                    <InputStyled type="text" placeholder="Digite o nome do dispositivo" {...register("productName", {onChange: (e) => {
+                    <InputStyled onKeyUp={handleBackspace} type="text" placeholder="Digite o nome do dispositivo" {...register("productName", {onChange: (e) => {
                        onSubmit(getValues())
                     }})}/>
                     {

@@ -40,3 +40,13 @@ export const UlStyled = styled.ul`
     justify-items: center;
     gap: 20px;
 `
+
+export const UlButtonStyled = styled.ul` 
+    width: 100%;
+    margin-top: 20px;  
+    display: flex;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: flex-start;
+    align-items: center;
+    gap: 10px;
+`

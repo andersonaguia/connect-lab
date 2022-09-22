@@ -25,7 +25,8 @@ export const Login = () => {
 
     const { isAuthenticated, handleLogin } = useAuthentication();
 
-    const onSubmit = (data) => {        
+    const onSubmit = (data) => { 
+        console.log("DATA: ", data)       
         handleLogin(data)
     }
 

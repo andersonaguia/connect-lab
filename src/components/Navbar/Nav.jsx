@@ -5,10 +5,10 @@ import { useAuthentication } from "../../contexts/Authentication/useAuthenticati
 
 export const Nav = ()=> {
     const { isAuthenticated, handleLogout } = useAuthentication();
-
+    
     const handleClickAutenticacao = () => {
         if (isAuthenticated) {
-          handleLogout()       
+          handleLogout()      
         }        
     };
 

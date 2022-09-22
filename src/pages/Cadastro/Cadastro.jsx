@@ -1,8 +1,7 @@
 import { Button } from "../../components/AppButton/Button";
 import { InputStyled } from "../../components/AppInput/Input.styles";
 import { SectionStyled, DivStyled, FormStyled } from "./Cadastro.styles";
-import PropTypes from 'prop-types'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup'
 import YupPassword from "yup-password"; 
@@ -11,6 +10,8 @@ import { checkCep } from "../../utils/checkCEP";
 import { createUser } from "../../utils/CreateUser";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
+import { useAuthentication } from '../../contexts/Authentication/useAuthentication'
+import { updateUser } from '../../utils/updateUser'
 
 YupPassword(yup)
 
@@ -43,30 +44,46 @@ const schema = yup.object({
     })   
   }).required();
 
-export const Cadastro = ({editar=false}) => {
+export const Cadastro = () => {
+    const navigate = useNavigate()
+    const { isAuthenticated, toEdit, handleToEdit } = useAuthentication()
     const { register, handleSubmit, trigger, setValue, setFocus, reset, formState:{ errors } } = useForm({
         resolver: yupResolver(schema)
     });        
     
-    // const [ loading, setLoading ] = useState(false)
-    
-    const onSubmit = (data) => {
-        console.log(data)
-        createUser(data)
+    const onSubmit = (body) => {
+        toEdit ? updateUser(isAuthenticated.token, isAuthenticated.user._id, body) : createUser(body)        
         .then((response) => {
-            toast.success("Dados cadastrados com sucesso!")
+            toEdit ? toast.success("Dados atualizados com sucesso!") : toast.success("Dados cadastrados com sucesso!")            
             console.log("RESPONSE: ", response)
             reset()
             sessionStorage.setItem('userData', JSON.stringify(response.data));
             setFocus('fullName')
-            console.log("USER DATA: ")            
+            console.log("USER DATA: ") 
+            handleToEdit()
+            navigate('/login')           
         })
         .catch((error) => {
             console.error("Erro: ", error.code)
+            toEdit ? toast.error("Falha ao atualizar dados!") : toast.error("Falha ao cadastrar o usuário!")
         })  
         toast.promise(createUser, {
             pending: "Salvando dados"
         })      
+    }
+
+    if(toEdit && isAuthenticated){
+        setValue('fullName', isAuthenticated.user.fullName)
+        setValue('email', isAuthenticated.user.email)
+        setValue('photoUrl', isAuthenticated.user.photoUrl)
+        setValue('phone', isAuthenticated.user.phone)
+        setValue('userAddress.city', isAuthenticated.user.userAddress.city)
+        setValue('userAddress.street', isAuthenticated.user.userAddress.street)
+        setValue('userAddress.neighborhood', isAuthenticated.user.userAddress.neighborhood)
+        setValue('userAddress.state', isAuthenticated.user.userAddress.state)
+        setValue('userAddress.number', isAuthenticated.user.userAddress.number)
+        setValue('userAddress.zipCode', isAuthenticated.user.userAddress.zipCode)
+        setValue('userAddress.complement', isAuthenticated.user.userAddress.complement)
     }
 
     const fillDataByCep = (cep) => {
@@ -81,7 +98,6 @@ export const Cadastro = ({editar=false}) => {
                 setValue('userAddress.street', response.data.logradouro)
                 setValue('userAddress.neighborhood', response.data.bairro)
                 setValue('userAddress.state', response.data.uf)
-                setValue('userAddress.city', response.data.localidade)
                 setFocus('userAddress.number')
             }            
         })
@@ -97,10 +113,10 @@ export const Cadastro = ({editar=false}) => {
             trigger(inputName)
                 .then(isValid => isValid ? setFocus(nextInput) : setFocus(inputName))
     }
-    
+    console.log(isAuthenticated)
     return(
-        <SectionStyled>            
-            <h2>{ editar ? "Editar" : "Cadastrar" }</h2>  
+        <SectionStyled>         
+            <h2>{ toEdit ? "Meu Perfil" : "Cadastrar" }</h2>  
             <ToastContainer theme="dark"/>          
             <FormStyled onSubmit={handleSubmit(onSubmit)}>                
                         <DivStyled>
@@ -222,15 +238,12 @@ export const Cadastro = ({editar=false}) => {
                             })}/>
                             <span hidden={true}>{toast.error(errors.userAddress?.neighborhood?.message)}</span>                   
                     </DivStyled>                              
-                <Button type="submit">Cadastrar</Button>              
-            </FormStyled>   
-            <Link to="/login">Login</Link>             
+                <Button type="submit">{toEdit ? "Salvar" : "Cadastrar"}</Button>              
+            </FormStyled>  
+            {
+                toEdit ? <Link to="/perfil">Cancelar</Link> : <Link to="/login">Login</Link>
+            } 
+                         
         </SectionStyled>
     )
-}
-
-Cadastro.propTypes = {
-    direction: PropTypes.string,
-    gap: PropTypes.string,
-    editar: PropTypes.bool
 }
