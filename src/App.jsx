@@ -9,7 +9,6 @@ import { ProductsProvider } from '../src/contexts/Products/ProductsProvider';
 // import { defaultTheme } from './styles/defaultTheme';
 import { darkTheme } from './styles/darkTheme'
 
-
 function App() {
   return (   
     <ThemeProvider theme={ darkTheme }>

@@ -12,6 +12,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import { useAuthentication } from '../../contexts/Authentication/useAuthentication'
 import { updateUser } from '../../utils/updateUser'
+import { useState } from 'react'
 
 YupPassword(yup)
 
@@ -46,33 +47,14 @@ const schema = yup.object({
 
 export const Cadastro = () => {
     const navigate = useNavigate()
-    const { isAuthenticated, toEdit, handleToEdit } = useAuthentication()
+    const { isAuthenticated, } = useAuthentication()
+    const [enterData, setEnterData] = useState(true)    
+
     const { register, handleSubmit, trigger, setValue, setFocus, reset, formState:{ errors } } = useForm({
         resolver: yupResolver(schema)
-    });        
-    
-    const onSubmit = (body) => {
-        toEdit ? updateUser(isAuthenticated.token, isAuthenticated.user._id, body) : createUser(body)        
-        .then((response) => {
-            toEdit ? toast.success("Dados atualizados com sucesso!") : toast.success("Dados cadastrados com sucesso!")            
-            console.log("RESPONSE: ", response)
-            reset()
-            sessionStorage.setItem('userData', JSON.stringify(response.data));
-            setFocus('fullName')
-            console.log("USER DATA: ") 
-            handleToEdit()
-            navigate('/login')           
-        })
-        .catch((error) => {
-            console.error("Erro: ", error.code)
-            toEdit ? toast.error("Falha ao atualizar dados!") : toast.error("Falha ao cadastrar o usuário!")
-        })  
-        toast.promise(createUser, {
-            pending: "Salvando dados"
-        })      
-    }
+    });  
 
-    if(toEdit && isAuthenticated){
+    if(isAuthenticated && enterData){
         setValue('fullName', isAuthenticated.user.fullName)
         setValue('email', isAuthenticated.user.email)
         setValue('photoUrl', isAuthenticated.user.photoUrl)
@@ -84,7 +66,50 @@ export const Cadastro = () => {
         setValue('userAddress.number', isAuthenticated.user.userAddress.number)
         setValue('userAddress.zipCode', isAuthenticated.user.userAddress.zipCode)
         setValue('userAddress.complement', isAuthenticated.user.userAddress.complement)
-    }
+        setEnterData(false)
+    }      
+    
+    const onSubmit = (body) => {
+        console.log("DADOS: ", body)
+        console.log(isAuthenticated)
+        if(isAuthenticated){
+            updateUser(isAuthenticated.token, isAuthenticated.user._id, body)
+            .then((response) => {
+                toast.success("Dados atualizados com sucesso!")           
+                console.log("RESPONSE: ", response)
+                sessionStorage.setItem('userData', JSON.stringify(response.data));
+                console.log("USER DATA: ")               
+                navigate('/login')           
+            })
+            .catch((error) => {
+                console.error("Erro: ", error.code)
+                toast.error("Falha ao atualizar dados!")
+            })  
+            toast.promise(updateUser, {
+                pending: "Salvando dados"
+            })   
+         }
+          else{
+             createUser(body) 
+             .then((response) => {                           
+                console.log("RESPONSE: ", response)
+                sessionStorage.setItem('userData', JSON.stringify(response.data));
+                console.log("USER DATA: ")                
+                toast.success("Usuário cadastrado com sucesso!") 
+                reset()
+                    // setTimeout(navigate('/login'), 3000)                                  
+            })
+            .catch((error) => {
+                console.error("Erro: ", error.code)
+                toast.error("Falha ao cadastrar o usuário! Tente novamente.")
+                   
+            })  
+            toast.promise(createUser, {
+                pending: "Salvando dados"
+            })   
+         }        
+         
+    }    
 
     const fillDataByCep = (cep) => {
         checkCep(cep)
@@ -113,10 +138,10 @@ export const Cadastro = () => {
             trigger(inputName)
                 .then(isValid => isValid ? setFocus(nextInput) : setFocus(inputName))
     }
-    console.log(isAuthenticated)
+    
     return(
         <SectionStyled>         
-            <h2>{ toEdit ? "Meu Perfil" : "Cadastrar" }</h2>  
+            <h2>{ isAuthenticated ? "Meu Perfil" : "Cadastrar" }</h2>  
             <ToastContainer theme="dark"/>          
             <FormStyled onSubmit={handleSubmit(onSubmit)}>                
                         <DivStyled>
@@ -238,10 +263,10 @@ export const Cadastro = () => {
                             })}/>
                             <span hidden={true}>{toast.error(errors.userAddress?.neighborhood?.message)}</span>                   
                     </DivStyled>                              
-                <Button type="submit">{toEdit ? "Salvar" : "Cadastrar"}</Button>              
+                <Button type="submit">{isAuthenticated ? "Salvar" : "Cadastrar"}</Button>              
             </FormStyled>  
             {
-                toEdit ? <Link to="/perfil">Cancelar</Link> : <Link to="/login">Login</Link>
+                isAuthenticated ? <Link to="/perfil">Cancelar</Link> : <Link to="/login">Login</Link>
             } 
                          
         </SectionStyled>

@@ -40,7 +40,8 @@ export const Dispositivos = () => {
         if(searchProducts){
             searchProducts.length > 0 ? setAllDevices(searchProducts) : setSearchProducts(null)            
         }else{
-            findAllDevices(isAuthenticated.token)
+            isAuthenticated &&
+            findAllDevices(isAuthenticated?.token)
             .then((response) => {                     
                 setAllDevices(response.data)                             
                 setIsLoading(false)
@@ -52,7 +53,7 @@ export const Dispositivos = () => {
                           
     }, [searchProducts, isAuthenticated])
     
-    if(isLoading){
+   if(isLoading){
         <h2>Carregando dados...</h2>
     }    
 

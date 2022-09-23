@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const ImgStyled = styled.img`
-    width: 50px;
-    height: 50px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
 `
 export const SectionStyled = styled.section`

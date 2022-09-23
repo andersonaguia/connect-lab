@@ -1,25 +1,25 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AuthenticationContext } from "./AuthenticationContext";
 import { userLogin } from "../../utils/userLogin";
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
+import { checkWeather } from "../../utils/checkWeather";
 
 export const AuthenticationProvider = ({ children }) => {
   const [ userData, setUserData ] = useState(null)
-  const [ edit, setEdit ] = useState(false);
-
+  const [ isLoading, setIsLoading ] = useState(true)
+  const [ weather, setWeather ] = useState(null)
+  
   const navigate = useNavigate()
 
   const handleLogin = (data) => {     
     userLogin(data)
-        .then((response) => {
-            toast.success("Sucesso! Entrando no site")
+        .then((response) => {            
             console.log("RESPONSE: ", response)
-            sessionStorage.setItem('userData', JSON.stringify(response.data));              
-            console.log("USER DATA: ", userData)  
-            setUserData(response.data)
-             
+            sessionStorage.setItem('userData', JSON.stringify(response.data)); 
+            toast.success("Sucesso! Entrando no site")  
+            setIsLoading(!isLoading)                 
         })
         .catch((error) => {
             console.error("Erro: ", error.code)
@@ -33,16 +33,36 @@ export const AuthenticationProvider = ({ children }) => {
 
   const handleLogout = () => {
     setUserData(null)
+    sessionStorage.removeItem('userData');
     navigate('/login')    
   }
 
-  const handleToEdit = () => {
-    setEdit(!edit);
+  const handleWeather = (isAuthenticated) => {
+    checkWeather(userData.user?.userAddress?.city)
+            .then((response) => {            
+                 setWeather(response.data)
+            })
+            .catch((error) => {
+                console.log(error)
+                setWeather(null)                
+            })
   }
+
+  useEffect(() => {
+    setUserData(JSON.parse(sessionStorage.getItem('userData')))  
+  }, [isLoading])
 
   return (
     <AuthenticationContext.Provider
-      value={{ isAuthenticated: userData, toEdit: edit, handleLogin, handleLogout, handleToEdit }}
+      value={
+        {
+          isAuthenticated: userData, 
+          hasWeather: weather, 
+          handleLogin, 
+          handleLogout, 
+          handleWeather 
+        }
+      }
     >
       {children}
     </AuthenticationContext.Provider>

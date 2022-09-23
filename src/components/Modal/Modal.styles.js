@@ -11,6 +11,7 @@ export const OverlayStyled = styled.div`
 `
 
 export const ModalStyled = styled.div`
+height: 90%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -23,4 +24,16 @@ export const ModalStyled = styled.div`
     background-color: #ffffff;
     padding: 50px;
     z-index: 1000;
+`
+export const ModalButtonStyled = styled.button`
+    background-color: transparent;
+    border: none;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+
+    &:hover{
+        opacity: 0.7;
+    }
 `

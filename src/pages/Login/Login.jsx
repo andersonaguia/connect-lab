@@ -1,6 +1,6 @@
 import { Button } from "../../components/AppButton/Button";
 import { InputStyled } from "../../components/AppInput/Input.styles";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SectionStyled, DivStyled, FormStyled, DivName } from "./Login.styles";
 import { yupResolver } from '@hookform/resolvers/yup'
 import YupPassword from "yup-password"; 
@@ -22,18 +22,16 @@ export const Login = () => {
     const { register, handleSubmit, formState:{ errors } } = useForm({
         resolver: yupResolver(schema)
     });
-
     const { isAuthenticated, handleLogin } = useAuthentication();
+    const navigate = useNavigate()
 
     const onSubmit = (data) => { 
         console.log("DATA: ", data)       
         handleLogin(data)
     }
-
-    if (isAuthenticated) {
-        return(
-            <Navigate to="/inicio"></Navigate>
-        )        
+    
+    if (isAuthenticated) {        
+        navigate('/inicio')       
     }   
 
     return(

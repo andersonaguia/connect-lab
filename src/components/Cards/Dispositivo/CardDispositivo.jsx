@@ -23,7 +23,10 @@ export const CardDispositivo = ({ product, locals }) => {
         }       
         addDevice(isAuthenticated.token, body)        
             .then((response) => {
-                setIsOpen(false)
+                if(response){
+                    setTimeout(alert("Pareado com sucesso"), 3000)
+                }
+                setIsOpen(false)                
             })
             .catch((error) => {
                 console.log("ERRO: ", error)

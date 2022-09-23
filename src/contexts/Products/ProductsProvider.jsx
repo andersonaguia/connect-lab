@@ -4,10 +4,13 @@ import { ProductsContext } from "./ProductsContext";
 import { useAuthentication } from "../Authentication/useAuthentication";
 import { findLocals } from "../../utils/findLocals";
 import { deleteDevice } from "../../utils/deleteDevice";
+import { useNavigate } from "react-router-dom";
 
 export const ProductsProvider = ({ children }) => {
     const { isAuthenticated } = useAuthentication()
     const [ locals, setLocals ] = useState(null)
+    const [statusDevice, setStatusDevice ] = useState()
+    const navigate = useNavigate()
 
     const handleLocals = () => {
         if(isAuthenticated){
@@ -31,12 +34,28 @@ export const ProductsProvider = ({ children }) => {
             })
     }
 
+    const handleStatusDevice = () => {
+        setStatusDevice(!statusDevice)
+        console.log("Status Device: ", statusDevice)
+        navigate('/inicio')
+    }
+
     useEffect(() => {
-        handleLocals()        
+        handleLocals()      
     }, [isAuthenticated])
 
     return (
-        <ProductsContext.Provider value={{ allPlaces: locals , handleLocals, deleteUserDevice}}>
+        <ProductsContext.Provider 
+        value={
+            { 
+                allPlaces: locals,
+                deviceStatus: statusDevice,
+                handleLocals, 
+                deleteUserDevice,
+                handleStatusDevice
+            }
+        }
+        >
            {children}
         </ProductsContext.Provider>
     )

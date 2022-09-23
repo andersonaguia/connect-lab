@@ -12,11 +12,6 @@ export const LiStyled = styled.li`
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
     background-color: #ffffff;
-    cursor: pointer;
-
-    &:hover{
-        opacity: 0.8;
-    }
 ` 
 export const DivStyled = styled.div`
     width: 200px;
@@ -46,4 +41,26 @@ export const DivModalStyled = styled.div`
 `
 export const UlStyled = styled.ul`
     list-style-type: none;
+`
+export const ButtonStyled = styled.button`
+    width: 35px;
+    height: 35px;
+    border: none;
+    background-image: url(${({image}) => image});
+    background-size: cover;
+    background-color: transparent;
+    cursor: pointer;
+    
+
+    &:hover {
+        opacity: 0.7;
+    }
+`
+
+export const DivButtonStyled = styled.div`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
 `

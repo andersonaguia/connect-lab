@@ -10,11 +10,15 @@ export const Perfil = () => {
     const handleEditar = () => {
         handleToEdit()
     }
+    
+    if(!isAuthenticated){
+        <h2>Carregando dados...</h2>
+    }
 
     return(
         <SectionStyled>
                 <H2Styled>Meu perfil</H2Styled>            
-                <ImgStyled src={isAuthenticated.user.photoUrl} alt="foto do perfil"></ImgStyled>              
+                <ImgStyled src={isAuthenticated.user.photoUrl ? isAuthenticated.user.photoUrl : '../../../public/avatar.png'} alt="foto do perfil"></ImgStyled>              
                 <H3Styled>{isAuthenticated.user.fullName}</H3Styled>                                       
                 <a href="/">{isAuthenticated.user.email}</a>
                 <p>
