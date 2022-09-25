@@ -1,4 +1,4 @@
-export const defaultTheme = {
+export const themeLight = {
     colors: {
         brand: {
             green: "#00A335",

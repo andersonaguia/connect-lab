@@ -5,27 +5,22 @@ import { Button } from "../../AppButton/Button";
 import { useProducts } from "../../../contexts/Products/useProducts";
 import { useAuthentication } from "../../../contexts/Authentication/useAuthentication";
 import PropTypes from 'prop-types'
-// import { updateDeviceStatus } from "../../../utils/updateDeviceStatus";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 
 export const CardUserDevice = ({ device }) => {
     const[ isOpen, setIsOpen ] = useState(false)
-    const { deleteUserDevice, handleStatusDevice, handleUpdateDevice, handleSearchDevices } = useProducts()
+    const { deleteUserDevice, handleUpdateDevice } = useProducts()
     const { isAuthenticated } = useAuthentication()
 
     const handleDelete = () => {
         deleteUserDevice(device._id)
-        handleSearchDevices()
         setIsOpen(false)
     }
 
     const handlePower = (deviceId, isOn) => {
-        handleStatusDevice()
         handleUpdateDevice(isAuthenticated.token, deviceId, !isOn)
-        handleSearchDevices()
     }
-
 
     return(
         <>

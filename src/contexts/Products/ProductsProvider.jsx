@@ -3,25 +3,23 @@ import { useState, useEffect } from "react";
 import { ProductsContext } from "./ProductsContext";
 import { useAuthentication } from "../Authentication/useAuthentication";
 import { findLocals } from "../../services/findLocals";
+import { findUserDevices } from "../../services/findUserDevices";
 import { deleteDevice } from "../../services/deleteDevice";
 import { useNavigate } from "react-router-dom";
 import { updateDeviceStatus } from "../../services/updateDeviceStatus";
 import { addDevice } from '../../services/addDevice'
-import { findUserDevices } from "../../services/findUserDevices";
 import { toast } from 'react-toastify';
 
 export const ProductsProvider = ({ children }) => {
     const { isAuthenticated } = useAuthentication()
     const [ locals, setLocals ] = useState(null)
     const [ statusDevice, setStatusDevice ] = useState(false)
-    const [ delDevice, setDelDevice ] = useState(false)
     const [ userDevices, setUserDevices ] = useState(null)
-    const [ updateDevice, setUpdateDevice ] = useState(false)
     const navigate = useNavigate()
 
     const handleLocals = () => {
         if(isAuthenticated){
-            findLocals(isAuthenticated.token)
+            findLocals(isAuthenticated?.token)
             .then((response) => {
                 setLocals(response.data)
              })
@@ -31,28 +29,23 @@ export const ProductsProvider = ({ children }) => {
         }       
     }
 
-    const handleLoading = () => {
-        setDelDevice(!delDevice)
-    }
-    const handleSearchDevices = () => {
-        findUserDevices(isAuthenticated.token, isAuthenticated.user._id)
-        .then((response) => {
-            setUserDevices(response.data) 
-            console.log("Devices ", response.data)            
-        })
-        .catch((error) => {
-            console.log(error)
-        })
+    const handleUserDevices = () => {
+        findUserDevices(isAuthenticated?.token, isAuthenticated.user?._id)
+                .then((response) => {                                  
+                    setUserDevices(response.data)                                                   
+                })
+                .catch((error) => {
+                    console.log(error)
+                })     
     }
 
     const deleteUserDevice = (id) => {
-        deleteDevice(isAuthenticated.token, id)
+        deleteDevice(isAuthenticated?.token, id)
             .then((response) => {
-                console.log(response)
                 toast.success("Dispositivo excluído com sucesso!")                 
                 setTimeout(() => {
-                    setDelDevice(!delDevice)        
-                }, 2000);
+                    setStatusDevice(!statusDevice)                            
+                }, 1000);
                 
             })
             .catch((error) => {
@@ -66,18 +59,16 @@ export const ProductsProvider = ({ children }) => {
 
     const handleStatusDevice = () => {
         setStatusDevice(!statusDevice)
-        console.log("Status Device: ", statusDevice)
         navigate('/inicio')
     }
 
     const handleUpdateDevice = (token, id, isOn) => {         
         updateDeviceStatus(token, id, isOn)
             .then((response) => {
-                console.log(response) 
                 toast.success("Estado atualizado com sucesso!")  
                 setTimeout(() => {
-                    setUpdateDevice(true)
-                }, 2000);                         
+                    setStatusDevice(!statusDevice)
+                }, 1000);                         
             })
             .catch((error) => {
                 console.log(error)
@@ -103,8 +94,8 @@ export const ProductsProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        handleLocals()      
-    }, [isAuthenticated])
+        handleLocals()            
+    }, [statusDevice])
 
     return (
         <ProductsContext.Provider 
@@ -112,16 +103,13 @@ export const ProductsProvider = ({ children }) => {
             { 
                 allPlaces: locals,
                 deviceStatus: statusDevice,
-                deviceDelete: delDevice,
-                deviceUpdate: updateDevice,
                 allUserDevices: userDevices,
                 handleLocals, 
                 deleteUserDevice,
                 handleStatusDevice,
                 handleUpdateDevice,
-                handleAddDevice, 
-                handleSearchDevices,
-                handleLoading,
+                handleAddDevice,
+                handleUserDevices
             }
         }
         >

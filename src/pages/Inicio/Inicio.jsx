@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 
 export const Inicio = () => {
     const { isAuthenticated, handleWeather, hasWeather } = useAuthentication();
-    const { deviceStatus, deviceDelete, allUserDevices } = useProducts()
+    const { deviceStatus } = useProducts()
     const [ isLoading, setIsLoading ] = useState(true)
     const [ userDevices, setUserDevices ] = useState(null)
     const [ userLocals, setUserLocals ] = useState(['Todos'])
@@ -40,19 +40,18 @@ export const Inicio = () => {
                 .catch((error) => {
                     console.log(error)
                 })                
-            }
-            
-    }, [isAuthenticated, search, deviceStatus,  deviceDelete, isLoading, allUserDevices])
+            }            
+    }, [isAuthenticated, search, deviceStatus, isLoading])
     
     
 
     // console.log("Weather: ", hasWeather)
-     console.log("DISPOSITIVOS: ", userDevices)
-    console.log("LOCAIS: ", userLocals)    
-    console.log("SEARCH: ", search)
+    //  console.log("DISPOSITIVOS: ", userDevices)
+    // console.log("LOCAIS: ", userLocals)    
+    // console.log("SEARCH: ", search)
     // console.log("DEVICE STATUS: ", deviceStatus)
-    console.log("DELETE: ", deviceDelete)
-    console.log("LOADING: ", isLoading)
+    // console.log("DELETE: ", deviceDelete)
+    // console.log("LOADING: ", isLoading)
       
     return(       
         <DivStyled> 

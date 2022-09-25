@@ -20,12 +20,12 @@ const schema = yup.object({
 
 export const CardDispositivo = ({ product, locals }) => {      
     const[ isOpen, setIsOpen ] = useState(false)
+    const { isAuthenticated } = useAuthentication() 
     const { handleAddDevice } = useProducts()
     const { register, handleSubmit, formState:{ errors } } = useForm({
         resolver: yupResolver(schema)
     }); 
-    const { isAuthenticated } = useAuthentication() 
-
+    
     const onSubmit = (data) => {              
         const body = {
             user: isAuthenticated.user._id,

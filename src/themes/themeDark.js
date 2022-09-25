@@ -1,4 +1,4 @@
-export const darkTheme = {
+export const themeDark = {
     colors: {
         brand: {
             green: "#00863F",
