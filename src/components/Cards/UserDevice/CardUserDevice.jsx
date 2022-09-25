@@ -32,11 +32,11 @@ export const CardUserDevice = ({ device }) => {
             <LiStyled >
                 <ToastContainer autoClose={5000} theme="dark"/>
                 <ImgStyled src={device.device.photoUrl} alt="foto do produto" />
-                <DivStyled>
+                <DivStyled className="text">
                     <H2Styled>{device.device.name}</H2Styled>
                     <p>{device.local.description} | {device.room} | {device.is_on ? 'ON' : 'OFF'}</p>
                 </DivStyled>
-                <DivButtonStyled>                
+                <DivButtonStyled className="btn">                
                     <ButtonStyled onClick={()=>setIsOpen(true)}
                         image="../../../../public/info.png" 
                         className="info"
@@ -47,7 +47,7 @@ export const CardUserDevice = ({ device }) => {
                     />
                 </DivButtonStyled>                
             </LiStyled>
-            <Modal open={isOpen} onClose={() => setIsOpen(false)}>
+            <Modal className='modal' open={isOpen} onClose={() => setIsOpen(false)}>
                 <h2>{device.device.name}</h2>
                 <h4>{device.device.madeBy}</h4>
                 <ImgStyled src={device.device.photoUrl} alt="foto do produto" />

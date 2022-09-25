@@ -11,7 +11,7 @@ export const OverlayStyled = styled.div`
 `
 
 export const ModalStyled = styled.div`
-    min-width: 350px;
+    max-width: 90%;
     display: flex;
     flex-direction: column;
     justify-content: center;

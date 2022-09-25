@@ -2,12 +2,12 @@ import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { ProductsContext } from "./ProductsContext";
 import { useAuthentication } from "../Authentication/useAuthentication";
-import { findLocals } from "../../utils/findLocals";
-import { deleteDevice } from "../../utils/deleteDevice";
+import { findLocals } from "../../services/findLocals";
+import { deleteDevice } from "../../services/deleteDevice";
 import { useNavigate } from "react-router-dom";
-import { updateDeviceStatus } from "../../utils/updateDeviceStatus";
-import { addDevice } from '../../utils/addDevice'
-import { findUserDevices } from "../../utils/findUserDevices";
+import { updateDeviceStatus } from "../../services/updateDeviceStatus";
+import { addDevice } from '../../services/addDevice'
+import { findUserDevices } from "../../services/findUserDevices";
 import { toast } from 'react-toastify';
 
 export const ProductsProvider = ({ children }) => {
@@ -31,10 +31,14 @@ export const ProductsProvider = ({ children }) => {
         }       
     }
 
+    const handleLoading = () => {
+        setDelDevice(!delDevice)
+    }
     const handleSearchDevices = () => {
         findUserDevices(isAuthenticated.token, isAuthenticated.user._id)
         .then((response) => {
-            setUserDevices(response.data)             
+            setUserDevices(response.data) 
+            console.log("Devices ", response.data)            
         })
         .catch((error) => {
             console.log(error)
@@ -45,10 +49,9 @@ export const ProductsProvider = ({ children }) => {
         deleteDevice(isAuthenticated.token, id)
             .then((response) => {
                 console.log(response)
-                toast.success("Dispositivo excluído com sucesso!") 
-                setDelDevice(!delDevice) 
+                toast.success("Dispositivo excluído com sucesso!")                 
                 setTimeout(() => {
-                                  
+                    setDelDevice(!delDevice)        
                 }, 2000);
                 
             })
@@ -118,6 +121,7 @@ export const ProductsProvider = ({ children }) => {
                 handleUpdateDevice,
                 handleAddDevice, 
                 handleSearchDevices,
+                handleLoading,
             }
         }
         >

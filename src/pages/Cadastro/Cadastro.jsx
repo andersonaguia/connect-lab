@@ -1,17 +1,17 @@
 import { Button } from "../../components/AppButton/Button";
 import { InputStyled } from "../../components/AppInput/Input.styles";
-import { SectionStyled, DivStyled, FormStyled } from "./Cadastro.styles";
+import { DivContainerStyled, DivStyled, FormStyled } from "./Cadastro.styles";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup'
 import YupPassword from "yup-password"; 
 import * as yup from "yup";
-import { checkCep } from "../../utils/checkCEP";
-import { createUser } from "../../utils/CreateUser";
+import { checkCep } from "../../services/checkCEP";
+import { createUser } from "../../services/CreateUser";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import { useAuthentication } from '../../contexts/Authentication/useAuthentication'
-import { updateUser } from '../../utils/updateUser'
+import { updateUser } from '../../services/updateUser'
 import { useState, useEffect } from 'react'
 import { Loading } from '../../components/Loading/Loading'
 
@@ -26,9 +26,9 @@ const schema = yup.object({
         .minUppercase(1, 'Senha deve possuir uma letra maiúscula')
         .minNumbers(1, 'Senha deve possuir um numero')
         .minSymbols(1, 'Senha deve possuir um caractere especial'),
-    passwordConfirmation: yup.string().required('Digite sua senha novamente')
+    passwordConfirmation: yup.string().required('Obrigatório confirmar a senha')
         .oneOf([yup.ref('password'), null], 'Senhas digitadas não conferem'),
-    fullName: yup.string().matches(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ' ]+$/, 'Digite um nome válido').min(8, 'Digite seu nome completo').required('Obrigatório informar um nome'), 
+    fullName: yup.string().matches(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ' ]+$/, 'Digite um nome válido').min(8, 'Digite seu nome e sobrenome').required('Obrigatório informar um nome'), 
     photoUrl: yup.string().url('Digite uma URL válida'),
     phone: yup.string().matches(/[0-9]{0}/, 'Digite um número de telefone válido'),
     userAddress: yup.object({
@@ -46,14 +46,14 @@ const schema = yup.object({
     })   
   }).required();
 
-export const Cadastro = () => {
+export const Cadastro = () => {    
+    const { register, handleSubmit, trigger, setValue, setFocus, reset, formState:{ errors } } = useForm({
+        resolver: yupResolver(schema)
+    }); 
     const navigate = useNavigate()
     const { isAuthenticated, } = useAuthentication()
     const [enterData, setEnterData] = useState(true)    
     const [ isLoading, setIsLoading ] = useState(true)
-    const { register, handleSubmit, trigger, setValue, setFocus, reset, formState:{ errors } } = useForm({
-        resolver: yupResolver(schema)
-    }); 
 
     useEffect(() => {
         setIsLoading(false)
@@ -61,9 +61,7 @@ export const Cadastro = () => {
     
     if(isLoading){
         return <Loading />      
-    }
-
-     
+    }     
 
     if(isAuthenticated && enterData){
         setValue('fullName', isAuthenticated.user.fullName)
@@ -105,8 +103,7 @@ export const Cadastro = () => {
                 sessionStorage.setItem('userData', JSON.stringify(response.data));
                 console.log("USER DATA: ")                
                 toast.success("Usuário cadastrado com sucesso!") 
-                reset()
-                    // setTimeout(navigate('/login'), 3000)                                  
+                reset()                              
             })
             .catch((error) => {
                 console.error("Erro: ", error.code)
@@ -117,13 +114,11 @@ export const Cadastro = () => {
                 pending: "Salvando dados"
             })   
          }        
-         
     }    
 
     const fillDataByCep = (cep) => {
         checkCep(cep)
         .then((response) => {
-            // console.log(response.data)
             if(response.data.erro === 'true'){
                 triggerError('userAddress.zipCode', 'userAddress.street')                
                 setFocus('useAddress.street')                
@@ -149,62 +144,40 @@ export const Cadastro = () => {
     }
     
     return(
-        <SectionStyled>         
+        isLoading ? <Loading /> : 
+        <DivContainerStyled>         
             <h2>{ isAuthenticated ? "Meu Perfil" : "Cadastrar" }</h2>  
             <ToastContainer theme="dark"/>          
-            <FormStyled onSubmit={handleSubmit(onSubmit)}>                
-                        <DivStyled>
+            <FormStyled onSubmit={handleSubmit(onSubmit)}>
+                <div className="inputs">
+                <DivStyled>
                             <label htmlFor="nome" >Nome completo*</label>
-                            <InputStyled type="text" id="nome" placeholder="Seu nome" {...register("fullName", {
-                                onBlur: (e) => {
-                                    triggerError('fullName', 'email')
-                                }
-                            })}/>
+                            <InputStyled type="text" id="nome" placeholder="Seu nome" {...register("fullName")}/>
                             <span hidden={true}>{toast.error(errors.fullName?.message)}</span>                            
                         </DivStyled>
                         <DivStyled direction="column">
                             <label htmlFor="email" >E-mail*</label>
-                            <InputStyled id="email" placeholder="Seu e-mail" {...register("email", {
-                                onBlur: (e) => {
-                                    triggerError('email', 'photoUrl')
-                                }
-                            })}/>
+                            <InputStyled type="email" id="email" placeholder="Seu e-mail" {...register("email")}/>
                             <span hidden={true}>{toast.error(errors.email?.message)}</span>
                         </DivStyled>                    
                         <DivStyled direction="column">
-                            <label htmlFor="foto" >URL foto do perfil</label>
-                            <InputStyled id="foto" placeholder="Sua foto" {...register("photoUrl", {
-                                onBlur: (e) => {
-                                    triggerError('photoUrl', 'phone')
-                                }
-                            })}/>
+                            <label type='text' htmlFor="foto" >URL foto do perfil</label>
+                            <InputStyled id="foto" placeholder="Sua foto" {...register("photoUrl")}/>
                             <span hidden={true}>{toast.error(errors.photoUrl?.message)}</span>
                         </DivStyled>
                         <DivStyled direction="column">
                             <label htmlFor="telefone" >Telefone</label>
-                            <InputStyled id="telefone" placeholder="Seu telefone" {...register("phone", {
-                                onBlur: (e) => {
-                                    triggerError('phone', 'password')
-                                }
-                            })}/>
+                            <InputStyled type="text" id="telefone" placeholder="Seu telefone" {...register("phone")}/>
                             <span hidden={true}>{toast.error(errors.phone?.message)}</span>
                         </DivStyled>                   
                         <DivStyled direction="column">
                             <label htmlFor="senha" >Senha*</label>
-                            <InputStyled  id="senha" placeholder="Sua senha" {...register("password", {
-                                onBlur: (e) => {
-                                    triggerError('password', 'passwordConfirmation')
-                                }
-                            })}/>
+                            <InputStyled  type="password" id="senha" placeholder="Sua senha" {...register("password")}/>
                             <span hidden={true}>{toast.error(errors.password?.message)}</span>
                         </DivStyled>
                         <DivStyled direction="column">
                             <label htmlFor="confirmacao" >Confirmação de senha*</label>
-                            <InputStyled type="password" id="confirmacao" placeholder="Digite sua senha novamente" {...register("passwordConfirmation", {
-                                onBlur: (e) => {
-                                    triggerError('passwordConfirmation', 'userAddress.zipCode')
-                                }
-                            })}/>
+                            <InputStyled type="password" id="confirmacao" placeholder="Digite sua senha novamente" {...register("passwordConfirmation")}/>
                             <span hidden={true}>{toast.error(errors.passwordConfirmation?.message)}</span>
                         </DivStyled>                 
                         <DivStyled direction="column">
@@ -220,64 +193,41 @@ export const Cadastro = () => {
                         </DivStyled>
                         <DivStyled direction="column">
                             <label htmlFor="endereco" >Logradouro/Endereço*</label>
-                            <InputStyled id="endereco" placeholder="Seu logradouro/endereço" {...register("userAddress.street", {
-                                onBlur: (e) => {
-                                    triggerError('userAddress.street', 'userAddress.city')
-                                }
-                            })}/>
+                            <InputStyled type='text' id="endereco" placeholder="Seu logradouro/endereço" {...register("userAddress.street")}/>
                             <span hidden={true}>{toast.error(errors.userAddress?.street?.message)}</span>
                         </DivStyled>                   
                         <DivStyled direction="column">
                             <label htmlFor="cidade" >Cidade*</label>
-                            <InputStyled id="cidade" placeholder="Sua cidade" {...register("userAddress.city", {
-                                onBlur: (e) => {
-                                    triggerError('userAddress.city', 'userAddress.state')
-                                }
-                            })}/>
+                            <InputStyled type='text' id="cidade" placeholder="Sua cidade" {...register("userAddress.city")}/>
                             <span hidden={true}>{toast.error(errors.userAddress?.city?.message)}</span>
                         </DivStyled>
                         <DivStyled direction="column">
                             <label htmlFor="estado" >Estado*</label>
-                            <InputStyled id="estado" placeholder="Seu estado" {...register("userAddress.state", {
-                                onBlur: (e) => {
-                                    triggerError('userAddress.state', 'userAddress.complement')
-                                }
-                            })}/>
+                            <InputStyled type='text' id="estado" placeholder="Seu estado" {...register("userAddress.state")}/>
                             <span hidden={true}>{toast.error(errors.userAddress?.state?.message)}</span>
                         </DivStyled>
                         <DivStyled direction="column">
                             <label htmlFor="complemento" >Complemento</label>
-                            <InputStyled id="complemento" placeholder="Seu complemento" {...register("userAddress.complement", {
-                                onBlur: (e) => {
-                                    triggerError('userAddress.complement', 'userAddress.number')
-                                }
-                            })}/>
+                            <InputStyled type='text' id="complemento" placeholder="Seu complemento" {...register("userAddress.complement")}/>
                             <span hidden={true}>{toast.error(errors.userAddress?.complement?.message)}</span>
                         </DivStyled>                   
                         <DivStyled direction="column">
                             <label htmlFor="numero" >Número*</label>
-                            <InputStyled type="number" id="numero" placeholder="Seu número" {...register("userAddress.number", {
-                                onBlur: (e) => {
-                                    triggerError('userAddress.number', 'userAddress.neighborhood')
-                                }
-                            })}/>
+                            <InputStyled type="number" id="numero" placeholder="Seu número" {...register("userAddress.number")}/>
                             <span hidden={true}>{toast.error(errors.userAddress?.number?.message)}</span>
                         </DivStyled>                   
                         <DivStyled direction="column">
                             <label htmlFor="bairro" >Bairro*</label>
-                            <InputStyled id="bairro" placeholder="Seu bairro" {...register("userAddress.neighborhood", {
-                                onBlur: (e) => {
-                                    triggerError('userAddress.neighborhood', '')
-                                }
-                            })}/>
+                            <InputStyled type='text' id="bairro" placeholder="Seu bairro" {...register("userAddress.neighborhood")}/>
                             <span hidden={true}>{toast.error(errors.userAddress?.neighborhood?.message)}</span>                   
-                    </DivStyled>                              
+                    </DivStyled>                
+                </div>                
+                                                      
                 <Button type="submit">{isAuthenticated ? "Salvar" : "Cadastrar"}</Button>              
             </FormStyled>  
             {
                 isAuthenticated ? <Link to="/perfil">Cancelar</Link> : <Link to="/login">Login</Link>
-            } 
-                         
-        </SectionStyled>
+            }                         
+        </DivContainerStyled>        
     )
 }

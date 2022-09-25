@@ -44,7 +44,7 @@ export const CardDispositivo = ({ product, locals }) => {
                 <H3Styled>{ product.name }</H3Styled> 
                 <Button onClick={()=> setIsOpen(true)}>Adicionar</Button>            
             </LiStyled>            
-            <Modal open={isOpen} onClose={() => setIsOpen(false)}>
+            <Modal className='modal' open={isOpen} onClose={() => setIsOpen(false)}>
                 <ToastContainer theme="dark"/>
                 <h2>{product.name}</h2>
                 <FormStyled onSubmit={handleSubmit(onSubmit)}>

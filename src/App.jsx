@@ -1,6 +1,7 @@
 import { GlobalStyle } from './GlobalStyle/globalStyles'
 import { Header } from './components/AppHeader/Header';
 import { Main } from './components/AppMain/Main'
+import { Footer } from './components/AppFooter/Footer';
 import { Router } from './router/Router'
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
@@ -21,7 +22,8 @@ function App() {
             <Main>
               <Router/>
             </Main>
-          </ProductsProvider>             
+          </ProductsProvider> 
+          <Footer />
         </AuthenticationProvider>                
       </BrowserRouter> 
     </ThemeProvider>         

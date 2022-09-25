@@ -12,17 +12,8 @@ export const LiStyled = styled.li`
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
     background-color: #ffffff;
+    
 ` 
-
-// const handleConfirmarForm = (valores) => {
-//     submitUser(valores)
-//         .then((response) => {
-//             console.log(response)
-//         })
-//         .catch((error) => {
-//             console.log(error)
-//         })
-// }
 export const DivStyled = styled.div`
     width: 200px;
     height: 100%;

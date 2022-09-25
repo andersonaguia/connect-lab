@@ -8,6 +8,22 @@ export const HeaderStyled = styled.header`
     justify-content: space-between;
     align-items: center;    
     background-color: ${({theme}) => theme.colors.brand.green};
+
+    @media screen and (max-width: 1700px){
+        width: 100%;
+    }
+
+    @media screen and (max-width: 1024px){
+        width: 100%;
+    }
+        
+    @media screen and (max-width: 540px){
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 280px;
+    }
 `
 
 export const TitleStyled = styled.h1`

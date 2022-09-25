@@ -52,12 +52,12 @@ export const Login = () => {
             <FormStyled onSubmit={handleSubmit(onSubmit)}>                
                     <DivStyled>
                         <label htmlFor='email'>E-mail</label>
-                        <InputStyled id='email' placeholder='Seu e-mail' {...register ('email')}/>
+                        <InputStyled type='email' id='email' placeholder='Seu e-mail' {...register ('email')}/>
                         <span hidden={true}>{toast.error(errors.email?.message)}</span> 
                     </DivStyled>
                     <DivStyled>
                         <label htmlFor='senha'>Senha</label>
-                        <InputStyled id='senha' placeholder='Sua senha' {...register('password')}/>
+                        <InputStyled type='password' id='senha' placeholder='Sua senha' {...register('password')}/>
                         <span hidden={true}>{toast.error(errors.password?.message)}</span>
                     </DivStyled>                 
                     <Button type="submit">Acessar</Button>              

@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { AuthenticationContext } from "./AuthenticationContext";
-import { userLogin } from "../../utils/userLogin";
+import { userLogin } from "../../services/userLogin";
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
-import { checkWeather } from "../../utils/checkWeather";
+import { checkWeather } from "../../services/checkWeather";
 
 export const AuthenticationProvider = ({ children }) => {
   const [ userData, setUserData ] = useState(null)
