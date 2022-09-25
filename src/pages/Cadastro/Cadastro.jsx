@@ -12,7 +12,8 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import { useAuthentication } from '../../contexts/Authentication/useAuthentication'
 import { updateUser } from '../../utils/updateUser'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { Loading } from '../../components/Loading/Loading'
 
 YupPassword(yup)
 
@@ -49,10 +50,20 @@ export const Cadastro = () => {
     const navigate = useNavigate()
     const { isAuthenticated, } = useAuthentication()
     const [enterData, setEnterData] = useState(true)    
-
+    const [ isLoading, setIsLoading ] = useState(true)
     const { register, handleSubmit, trigger, setValue, setFocus, reset, formState:{ errors } } = useForm({
         resolver: yupResolver(schema)
-    });  
+    }); 
+
+    useEffect(() => {
+        setIsLoading(false)
+    }, [])
+    
+    if(isLoading){
+        return <Loading />      
+    }
+
+     
 
     if(isAuthenticated && enterData){
         setValue('fullName', isAuthenticated.user.fullName)
@@ -70,8 +81,6 @@ export const Cadastro = () => {
     }      
     
     const onSubmit = (body) => {
-        console.log("DADOS: ", body)
-        console.log(isAuthenticated)
         if(isAuthenticated){
             updateUser(isAuthenticated.token, isAuthenticated.user._id, body)
             .then((response) => {

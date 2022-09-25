@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const SectionStyled = styled.section`
-    width: 80%;
-    height: 215px;
+    width: 90%;
+    height: 150px;
     padding: 10px;
     display: flex;
     flex-direction: row;
@@ -11,7 +11,7 @@ export const SectionStyled = styled.section`
     gap: 20px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
-    background-color: #ffffff;
+    background-color: ${({theme}) => theme.colors.brand.white};
 
     & ul{
         list-style-type: none;
@@ -27,11 +27,11 @@ export const DivStyled = styled.div`
     align-items: center;
 `
 export const SectionStyledGrid = styled.section`
-    width: 100%;
+    width: 90%;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 80px;
+    
 `
 export const UlStyled = styled.ul`
     width: 100%;
@@ -42,11 +42,11 @@ export const UlStyled = styled.ul`
 `
 
 export const UlButtonStyled = styled.ul` 
-    width: 100%;
-    margin-top: 20px;  
+    width: 80%;
+    padding: 20px;  
     display: flex;
-    grid-template-columns: repeat(3, 1fr);
-    justify-items: flex-start;
+    flex-direction: row;
+    justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
 `

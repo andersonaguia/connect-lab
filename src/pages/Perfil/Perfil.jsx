@@ -3,16 +3,23 @@ import { SectionStyled, ImgStyled} from "./Perfil.styles";
 import { Link } from "react-router-dom";
 import { Button } from "../../components/AppButton/Button"
 import { useAuthentication } from "../../contexts/Authentication/useAuthentication";
+import { useState, useEffect } from "react";
+import { Loading } from "../../components/Loading/Loading";
 
 export const Perfil = () => {
     const { isAuthenticated, handleToEdit } = useAuthentication()
+    const [ isLoading, setIsLoading ] = useState(true)
 
     const handleEditar = () => {
         handleToEdit()
     }
+
+    useEffect(() => {
+        setIsLoading(false)
+    }, [])
     
-    if(!isAuthenticated){
-        <h2>Carregando dados...</h2>
+    if(isLoading){
+        return <Loading />      
     }
 
     return(

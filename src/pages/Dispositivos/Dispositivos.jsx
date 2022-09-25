@@ -1,4 +1,4 @@
-import { FormStyled, InputStyled, UlStyled } from "./Dispositivos.styles"
+import { FormStyled, InputStyled, UlStyled, DivStyled } from "./Dispositivos.styles"
 import { Button } from '../../components/AppButton/Button' 
 import { useAuthentication } from "../../contexts/Authentication/useAuthentication";
 import { useState, useEffect } from "react";
@@ -6,6 +6,7 @@ import { findAllDevices } from "../../utils/findAllDevices";
 import { CardDispositivo } from "../../components/Cards/Dispositivo/CardDispositivo";
 import { useForm } from "react-hook-form";
 import { useProducts } from "../../contexts/Products/useProducts";
+import { Loading } from "../../components/Loading/Loading";
 
 export const Dispositivos = () => {
     const { register, handleSubmit, getValues, reset} = useForm()
@@ -54,29 +55,27 @@ export const Dispositivos = () => {
     }, [searchProducts, isAuthenticated])
     
    if(isLoading){
-        <h2>Carregando dados...</h2>
+        return <Loading />
     }    
 
     return(
-        <>
-            <section>
-                <FormStyled onSubmit={handleSubmit(onSubmit)}>
-                    <InputStyled onKeyUp={handleBackspace} type="text" placeholder="Digite o nome do dispositivo" {...register("productName", {onChange: (e) => {
-                       onSubmit(getValues())
-                    }})}/>
-                    {
-                        searchProducts ? <Button onClick={clearSearch}>Limpar</Button> : <Button type="submit">Buscar</Button>
-                    }
-                </FormStyled>
-            </section>
+        <DivStyled>            
+            <FormStyled onSubmit={handleSubmit(onSubmit)}>
+                <InputStyled onKeyUp={handleBackspace} type="text" placeholder="Digite o nome do dispositivo" {...register("productName", {onChange: (e) => {
+                    onSubmit(getValues())
+                }})}/>
+                {
+                    searchProducts ? <Button onClick={clearSearch}>Limpar</Button> : <Button type="submit">Buscar</Button>
+                }
+            </FormStyled>            
             <UlStyled>
                 {
                     allDevices ? 
                         allDevices.map((product) => (
                             <CardDispositivo key={product._id} product={product} locals={allPlaces}/>
-                        )): <h2>Carregando produtos...</h2>
+                        )): <Loading />
                 }
             </UlStyled>
-        </>       
+        </DivStyled>       
     )
 }

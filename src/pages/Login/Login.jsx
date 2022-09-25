@@ -5,11 +5,11 @@ import { SectionStyled, DivStyled, FormStyled, DivName } from "./Login.styles";
 import { yupResolver } from '@hookform/resolvers/yup'
 import YupPassword from "yup-password"; 
 import * as yup from "yup";
-// import { userLogin } from "../../../src/utils/userLogin";
 import { toast, ToastContainer } from 'react-toastify';
 import { useForm } from "react-hook-form";
 import { useAuthentication } from "../../contexts/Authentication/useAuthentication";
-
+import { useState, useEffect } from "react";
+import { Loading } from '../../components/Loading/Loading'
 
 YupPassword(yup)
 
@@ -24,10 +24,18 @@ export const Login = () => {
     });
     const { isAuthenticated, handleLogin } = useAuthentication();
     const navigate = useNavigate()
+    const [ isLoading, setIsLoading ] = useState(true)
 
-    const onSubmit = (data) => { 
-        console.log("DATA: ", data)       
+    const onSubmit = (data) => {      
         handleLogin(data)
+    }
+
+    useEffect(() => {
+        setIsLoading(false)
+    }, [])
+
+    if(isLoading){
+        return <Loading />
     }
     
     if (isAuthenticated) {        

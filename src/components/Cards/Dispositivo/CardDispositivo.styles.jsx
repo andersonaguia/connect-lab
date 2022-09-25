@@ -1,22 +1,26 @@
 import styled from "styled-components"
 
 export const LiStyled = styled.li`
-    width: 380px;
+    width: 250px;
     margin-top: 10px;
     padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 28px;
+    gap: 15px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
-    background-color: #ffffff;
+    background-color: ${({theme}) => theme.colors.brand.white};
+
+    & h3{
+        font-size: 0.6rem;
+    }
 `
 
 export const ImgProdutoStyled = styled.img`
-    width: 80px;
-    height: 80px;
+    width: 50px;
+    height: 50px;
 `
 
 export const FormStyled = styled.form`

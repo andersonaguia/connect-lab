@@ -6,12 +6,13 @@ import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { AuthenticationProvider } from '../src/contexts/Authentication/AuthenticationProvider';
 import { ProductsProvider } from '../src/contexts/Products/ProductsProvider';
-// import { defaultTheme } from './styles/defaultTheme';
+import { defaultTheme } from './styles/defaultTheme';
 import { darkTheme } from './styles/darkTheme'
 
 function App() {
+  console.log(defaultTheme, darkTheme)
   return (   
-    <ThemeProvider theme={ darkTheme }>
+    <ThemeProvider theme={ defaultTheme }>
       <GlobalStyle /> 
       <BrowserRouter>  
         <AuthenticationProvider>

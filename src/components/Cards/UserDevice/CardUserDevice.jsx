@@ -1,41 +1,36 @@
 import { LiStyled, DivStyled, DivButtonStyled, ImgStyled, ButtonStyled, H2Styled, DivModalStyled, UlStyled } from "./CardUserDevice.styles";
 import { Modal } from "../../Modal/Modal";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "../../AppButton/Button";
 import { useProducts } from "../../../contexts/Products/useProducts";
 import { useAuthentication } from "../../../contexts/Authentication/useAuthentication";
 import PropTypes from 'prop-types'
-import { updateDeviceStatus } from "../../../utils/updateDeviceStatus";
+// import { updateDeviceStatus } from "../../../utils/updateDeviceStatus";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
-
-export const CardUserDevice = ({device, image}) => {
+export const CardUserDevice = ({ device }) => {
     const[ isOpen, setIsOpen ] = useState(false)
-    const { deleteUserDevice, handleStatusDevice, deviceStatus } = useProducts()
+    const { deleteUserDevice, handleStatusDevice, handleUpdateDevice, handleSearchDevices } = useProducts()
     const { isAuthenticated } = useAuthentication()
 
     const handleDelete = () => {
-        deleteUserDevice(isAuthenticated.token, device._id)
+        deleteUserDevice(device._id)
+        handleSearchDevices()
         setIsOpen(false)
     }
 
     const handlePower = (deviceId, isOn) => {
         handleStatusDevice()
-        updateDeviceStatus(isAuthenticated.token, deviceId, !isOn)
-            .then((response) => {
-                console.log("Status Atualizado: ", response)                
-            })
-            .catch((error) => {
-                console.log(error)
-            })
+        handleUpdateDevice(isAuthenticated.token, deviceId, !isOn)
+        handleSearchDevices()
     }
 
-    useEffect(() => {
-        
-    }, [deviceStatus])
 
     return(
         <>
             <LiStyled >
+                <ToastContainer autoClose={5000} theme="dark"/>
                 <ImgStyled src={device.device.photoUrl} alt="foto do produto" />
                 <DivStyled>
                     <H2Styled>{device.device.name}</H2Styled>
@@ -44,6 +39,7 @@ export const CardUserDevice = ({device, image}) => {
                 <DivButtonStyled>                
                     <ButtonStyled onClick={()=>setIsOpen(true)}
                         image="../../../../public/info.png" 
+                        className="info"
                     />
                     <ButtonStyled 
                         onClick={() => handlePower(device._id, device.is_on)}
@@ -87,6 +83,5 @@ export const CardUserDevice = ({device, image}) => {
 }
 
 CardUserDevice.propTypes = {
-    device: PropTypes.object.isRequired,
-    image: PropTypes.string.isRequired
+    device: PropTypes.object.isRequired
 }

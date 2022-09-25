@@ -6,11 +6,24 @@ import { useState } from 'react'
 import { Modal } from '../../Modal/Modal'
 import { useForm } from "react-hook-form";
 import { useAuthentication } from '../../../contexts/Authentication/useAuthentication'
-import { addDevice } from '../../../utils/addDevice'
+// import { addDevice } from '../../../utils/addDevice'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from "yup";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
+import { useProducts } from '../../../contexts/Products/useProducts'
+
+const schema = yup.object({
+    place: yup.string().required('Obrigatório informar o local'),
+    local: yup.string().required('Obrigatório informar o cômodo')          
+  }).required();
 
 export const CardDispositivo = ({ product, locals }) => {      
     const[ isOpen, setIsOpen ] = useState(false)
-    const { register, handleSubmit } = useForm() 
+    const { handleAddDevice } = useProducts()
+    const { register, handleSubmit, formState:{ errors } } = useForm({
+        resolver: yupResolver(schema)
+    }); 
     const { isAuthenticated } = useAuthentication() 
 
     const onSubmit = (data) => {              
@@ -20,17 +33,8 @@ export const CardDispositivo = ({ product, locals }) => {
             is_on: true,
             local: data.place,
             room: data.local
-        }       
-        addDevice(isAuthenticated.token, body)        
-            .then((response) => {
-                if(response){
-                    setTimeout(alert("Pareado com sucesso"), 3000)
-                }
-                setIsOpen(false)                
-            })
-            .catch((error) => {
-                console.log("ERRO: ", error)
-            })
+        }
+        handleAddDevice(isAuthenticated.token, body)       
     }
 
     return(
@@ -41,6 +45,7 @@ export const CardDispositivo = ({ product, locals }) => {
                 <Button onClick={()=> setIsOpen(true)}>Adicionar</Button>            
             </LiStyled>            
             <Modal open={isOpen} onClose={() => setIsOpen(false)}>
+                <ToastContainer theme="dark"/>
                 <h2>{product.name}</h2>
                 <FormStyled onSubmit={handleSubmit(onSubmit)}>
                     <label htmlFor='place'>Local*</label>
@@ -51,8 +56,10 @@ export const CardDispositivo = ({ product, locals }) => {
                             )) 
                         }
                     </SelectStyled>
+                    <span hidden={true}>{toast.error(errors.place?.message)}</span>
                     <label htmlFor='local'>Cômodo*</label>
                     <InputStyled type='text' id='local' placeholder='Digite o nome do cômodo' {...register('local')}/>
+                    <span hidden={true}>{toast.error(errors.local?.message)}</span>
                     <Button type='submit'>Confirmar</Button>
                 </FormStyled>                
             </Modal>                           

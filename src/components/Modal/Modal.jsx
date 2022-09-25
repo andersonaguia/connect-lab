@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { OverlayStyled, ModalStyled, ModalButtonStyled} from './Modal.styles'
+import { OverlayStyled, ModalStyled, ModalButtonStyled, DivStyled} from './Modal.styles'
 
 
 export const Modal = ({open, onClose, children}) => {
@@ -10,7 +10,9 @@ export const Modal = ({open, onClose, children}) => {
     return(
         <OverlayStyled>
             <ModalStyled> 
-                <ModalButtonStyled onClick={onClose}>&times;</ModalButtonStyled>                
+                <DivStyled>
+                    <ModalButtonStyled onClick={onClose}>&times;</ModalButtonStyled>
+                </DivStyled>                               
                 {children}                
             </ModalStyled>
         </OverlayStyled>        

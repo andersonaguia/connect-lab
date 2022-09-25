@@ -39,13 +39,13 @@ export const AuthenticationProvider = ({ children }) => {
 
   const handleWeather = (isAuthenticated) => {
     checkWeather(userData.user?.userAddress?.city)
-            .then((response) => {            
-                 setWeather(response.data)
-            })
-            .catch((error) => {
-                console.log(error)
-                setWeather(null)                
-            })
+      .then((response) => {   
+        setWeather(response.data)
+        })
+      .catch((error) => {
+        console.log(" Clima Erro:", error)
+        setWeather(null)                
+      })
   }
 
   useEffect(() => {
