@@ -7,8 +7,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import YupPassword from "yup-password"; 
 import * as yup from "yup";
 import { checkCep } from "../../services/checkCep";
-import { createUser } from "../../services/CreateUser";
-import { toast, ToastContainer } from 'react-toastify';
+import { createUser } from "../../services/createUser";
+import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useAuthentication } from '../../contexts/Authentication/useAuthentication'
 import { updateUser } from '../../services/updateUser'
