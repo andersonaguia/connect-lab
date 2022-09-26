@@ -15,7 +15,18 @@ export const ProductsProvider = ({ children }) => {
     const [ locals, setLocals ] = useState(null)
     const [ statusDevice, setStatusDevice ] = useState(false)
     const [ userDevices, setUserDevices ] = useState(null)
+    const [ hasLocal, setHasLocal ] = useState(false)
+    const [ search, setSearch ] = useState(null)
+    const [ control, setControl ] = useState(true)   
+
     const navigate = useNavigate()
+
+    const handleSearch = (device) => {
+        console.log(device)
+        setStatusDevice(() => !statusDevice)
+        setSearch(() => device)
+        setControl(() => false)
+    }
 
     const handleLocals = () => {
         if(isAuthenticated){
@@ -29,14 +40,26 @@ export const ProductsProvider = ({ children }) => {
         }       
     }
 
-    const handleUserDevices = () => {
-        findUserDevices(isAuthenticated?.token, isAuthenticated.user?._id)
-                .then((response) => {                                  
-                    setUserDevices(response.data)                                                   
-                })
-                .catch((error) => {
-                    console.log(error)
-                })     
+    const handleUserDevices = () => {        
+        findUserDevices(isAuthenticated?.token, isAuthenticated?.user?._id)
+            .then((response) => {
+                if(search != null){
+                    search === 'Todos' ? setUserDevices(response.data) : setUserDevices(response.data.filter((device) => device.local.description === search))
+                    if(control){
+                        setSearch(null)
+                    }                    
+                }else{
+                    setUserDevices(response.data)
+                }
+
+                setTimeout(() => {
+                    search === null && setHasLocal(!hasLocal)                                            
+                }, 1000); 
+
+            })
+            .catch((error) => {
+                console.log(error)
+            })     
     }
 
     const deleteUserDevice = (id) => {
@@ -44,7 +67,7 @@ export const ProductsProvider = ({ children }) => {
             .then((response) => {
                 toast.success("Dispositivo excluído com sucesso!")                 
                 setTimeout(() => {
-                    setStatusDevice(!statusDevice)                            
+                    setStatusDevice(!statusDevice)                           
                 }, 1000);
                 
             })
@@ -79,7 +102,8 @@ export const ProductsProvider = ({ children }) => {
             })
     }
 
-    const handleAddDevice = (token, body) => {
+    const handleAddDevice = (token, body) => { 
+        setSearch(null)
         addDevice(token, body)        
             .then((response) => {
                 toast.success("Dispositivo vinculado com sucesso!")                                        
@@ -97,6 +121,18 @@ export const ProductsProvider = ({ children }) => {
         handleLocals()            
     }, [statusDevice])
 
+    useEffect(() => {
+        handleLocals()            
+    }, [])
+
+    useEffect(() => {        
+        handleUserDevices()            
+    }, [statusDevice])    
+
+    useEffect(() => {
+        handleUserDevices()            
+    }, [])
+
     return (
         <ProductsContext.Provider 
         value={
@@ -104,12 +140,14 @@ export const ProductsProvider = ({ children }) => {
                 allPlaces: locals,
                 deviceStatus: statusDevice,
                 allUserDevices: userDevices,
+                local: hasLocal,
                 handleLocals, 
                 deleteUserDevice,
                 handleStatusDevice,
                 handleUpdateDevice,
                 handleAddDevice,
-                handleUserDevices
+                handleUserDevices,
+                handleSearch
             }
         }
         >

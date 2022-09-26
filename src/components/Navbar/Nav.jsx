@@ -4,7 +4,7 @@ import { Button } from "../AppButton/Button";
 import { useAuthentication } from "../../contexts/Authentication/useAuthentication";
 
 export const Nav = ()=> {
-    const { isAuthenticated, handleLogout } = useAuthentication();
+    const { isAuthenticated, handleLogout } = useAuthentication()    
     
     const handleClickAutenticacao = () => {
         if (isAuthenticated) {

@@ -9,8 +9,7 @@ import { checkWeather } from "../../services/checkWeather";
 export const AuthenticationProvider = ({ children }) => {
   const [ userData, setUserData ] = useState(null)
   const [ isLoading, setIsLoading ] = useState(true)
-  const [ weather, setWeather ] = useState(null)
-  
+  const [ weather, setWeather ] = useState(null)  
   const navigate = useNavigate()
 
   const handleLogin = (data) => {     

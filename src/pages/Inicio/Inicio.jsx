@@ -3,7 +3,6 @@ import { SectionStyled , DivStyled, SectionStyledGrid, UlStyled, UlButtonStyled 
 import PropTypes from 'prop-types'
 import { useAuthentication } from "../../contexts/Authentication/useAuthentication";
 import { useState, useEffect } from "react";
-import { findUserDevices } from "../../services/findUserDevices";
 import { CardUserDevice } from "../../components/Cards/UserDevice/CardUserDevice";
 import { ButtonSecondary } from "../../components/AppButton/Secondary/ButtonSecondary";
 import { useProducts } from "../../contexts/Products/useProducts";
@@ -12,46 +11,31 @@ import { Link } from "react-router-dom";
 
 export const Inicio = () => {
     const { isAuthenticated, handleWeather, hasWeather } = useAuthentication();
-    const { deviceStatus } = useProducts()
+    const { deviceStatus, allUserDevices, local, handleLocals, buttonSelected, handleUserDevices, handleSearch } = useProducts()
     const [ isLoading, setIsLoading ] = useState(true)
-    const [ userDevices, setUserDevices ] = useState(null)
-    const [ userLocals, setUserLocals ] = useState(['Todos'])
-    const [ search, setSearch ] = useState(null)
-
-    const handleSearch = (item) => {        
-        setSearch(item)        
-    }    
+    const [ userLocals, setUserLocals ] = useState(['Todos'])   
     
     useEffect(() => {            
             if(isAuthenticated){ 
-                handleWeather()                                               
-                findUserDevices(isAuthenticated.token, isAuthenticated.user?._id)
-                .then((response) => {
-                    console.log(response)
-                    if(!search){
-                        setUserLocals(['Todos'])
-                        setUserLocals((locals => [...locals, ...new Set(response.data.map((device) => device.local.description))]))
-                        setSearch('Todos')
-                        setIsLoading(false)
-                    }               
-                    search === 'Todos' ? setUserDevices(response.data) : setUserDevices(response.data.filter((device) => device.local.description === search))                    
-                                                   
-                })
-                .catch((error) => {
-                    console.log(error)
-                })                
+                handleWeather()                                                             
             }            
-    }, [isAuthenticated, search, deviceStatus, isLoading])
+    }, [deviceStatus, isLoading])
     
+    useEffect(() => {
+        handleUserDevices()
+        setIsLoading(false)
+    }, [deviceStatus])
     
+    useEffect(() => {
+        setUserLocals(['Todos'])
+        setUserLocals((locals => [...locals, ...new Set(allUserDevices?.map((device) => device.local.description))]))
+    }, [local, buttonSelected])
 
-    // console.log("Weather: ", hasWeather)
-    //  console.log("DISPOSITIVOS: ", userDevices)
-    // console.log("LOCAIS: ", userLocals)    
-    // console.log("SEARCH: ", search)
-    // console.log("DEVICE STATUS: ", deviceStatus)
-    // console.log("DELETE: ", deviceDelete)
-    // console.log("LOADING: ", isLoading)
+    useEffect(() => {
+        handleLocals()
+    }, [isLoading])
+    console.log("USER DEVICES: ", allUserDevices)
+    console.log("USER LOCALS: ", userLocals)
       
     return(       
         <DivStyled> 
@@ -77,7 +61,7 @@ export const Inicio = () => {
                 ) : 
                 (
                     <SectionStyled>
-                        <h2>Falha ao obter dados de clima</h2>
+                        <h2>Tentando obter dados do clima...</h2>
                     </SectionStyled>                    
                 )
 
@@ -86,7 +70,7 @@ export const Inicio = () => {
             <UlButtonStyled className="buttons">
                 {
                     userLocals.length > 1 ?
-                        userLocals.map((place) => (
+                    userLocals?.map((place) => (
                             <ButtonSecondary 
                                 key={place._id} 
                                 whenFiltering={handleSearch} 
@@ -95,21 +79,19 @@ export const Inicio = () => {
                             >
                                 {place}
                             </ButtonSecondary>
-                        )): 
-                        (
-                            <>
-                                <p>Nenhum dispositivo cadastrado!</p>
-                                <Link to="/dispositivos">Cadastrar</Link>
-                            </>
-                            
-                        )
+                        )): isLoading === false && (
+                                <>
+                                    <p>Nenhum dispositivo cadastrado!</p>
+                                    <Link onClick={handleLocals} to="/dispositivos">Cadastrar</Link>
+                                </>                            
+                            )
                 } 
             </UlButtonStyled>
             <SectionStyledGrid className="products">
                 <UlStyled>
                     {
-                        userDevices ? 
-                            userDevices.map((device) => (
+                        allUserDevices ? 
+                            allUserDevices.map((device) => (
                                 <CardUserDevice key={device._id} device={device} />
                             )): <Loading />
                     }

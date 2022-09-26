@@ -7,7 +7,6 @@ export const themeLight = {
             error: "#D72736",
             warn: "#D4A327",
             info: "#27BDBE",
-            transparent: "transparent"
         },
         text:{
             primary: "#FFFFFF",

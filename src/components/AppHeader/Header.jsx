@@ -1,5 +1,5 @@
 import { Nav } from "../Navbar/Nav"
-import { HeaderStyled, TitleStyled} from "./Header.styles"
+import { DivStyled, HeaderStyled, TitleStyled, ImgStyled} from "./Header.styles"
 import { Button } from "../AppButton/Button";
 import { useAuthentication } from "../../contexts/Authentication/useAuthentication";
 import { useCustomTheme } from "../../contexts/CustomTheme/useCustomTheme";
@@ -13,12 +13,16 @@ export const Header = () => {
     };
 
     return(
-        <HeaderStyled>
-            <TitleStyled>connect lab</TitleStyled>
+        <DivStyled>
+            <HeaderStyled>
+                <ImgStyled src="../../../public/iot.png" alt="logo"></ImgStyled>
+                <TitleStyled>connect lab</TitleStyled>
+            </HeaderStyled>
+            
             {            
                 isAuthenticated ? (
                 <>
-                    <Button className='theme' onClick={handleTheme}>
+                    <Button onClick={handleTheme}>
                         {
                             themeName === 'dark' ? 'Light' : 'Dark'
                         }
@@ -28,6 +32,6 @@ export const Header = () => {
                 </>
                  ): <Button onClick={handleClickAuth}>Login</Button>              
             }           
-        </HeaderStyled>
+        </DivStyled>
     )
 }

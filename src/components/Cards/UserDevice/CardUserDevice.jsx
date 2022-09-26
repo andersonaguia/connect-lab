@@ -71,7 +71,7 @@ export const CardUserDevice = ({ device }) => {
                         <p><strong>Força de Sinal:</strong> {device.device.info.signal}</p>
                     </li>
                 </UlStyled>
-                <Button onClick={handleDelete}>Remover</Button>        
+                <Button className="btn" onClick={handleDelete}>Remover</Button>        
             </Modal> 
         </>     
     )

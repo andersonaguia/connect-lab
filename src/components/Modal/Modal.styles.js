@@ -50,6 +50,10 @@ export const ModalStyled = styled.div`
         border: 1px solid;
         padding: 5px;
         font-size: 0.8rem;
+    }    
+
+    & .btn{
+        background-color: ${({theme}) => theme.colors.brand.error};
     }
 `
 export const ModalButtonStyled = styled.button`
@@ -62,7 +66,7 @@ export const ModalButtonStyled = styled.button`
     color: ${({ theme }) => theme.colors.text.secondary};
     &:hover{
         opacity: 0.7;
-    }
+    }   
 `
 
 export const DivStyled = styled.div`
