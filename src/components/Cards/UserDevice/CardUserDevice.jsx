@@ -38,7 +38,7 @@ export const CardUserDevice = ({ device }) => {
                     />
                     <ButtonStyled 
                         onClick={() => handlePower(device._id, device.is_on)}
-                        image={ device.is_on ? "../../../../public/shutdown.png" : "../../../../public/powerOn.png" } 
+                        image={ device.is_on ? "/shutdown.png" : "/powerOn.png" } 
                     />
                 </DivButtonStyled>                
             </LiStyled>
@@ -50,7 +50,7 @@ export const CardUserDevice = ({ device }) => {
                     <h3>{device.is_on ? 'Dispositivo Ligado' : 'Dispositivo Desligado'}</h3>
                     <ButtonStyled 
                         onClick={() => handlePower(device._id, device.is_on)}
-                        image={ device.is_on ? "../../../../public/shutdown.png" : "../../../../public/powerOn.png" }
+                        image={ device.is_on ? "/shutdown.png" : "/powerOn.png" }
                     />
                 </DivModalStyled>
                 <UlStyled>

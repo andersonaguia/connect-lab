@@ -15,7 +15,7 @@ export const Header = () => {
     return(
         <DivStyled>
             <HeaderStyled>
-                <ImgStyled src="../../../public/iot.png" alt="logo"></ImgStyled>
+                <ImgStyled src="/iot.png" alt="logo"></ImgStyled>
                 <TitleStyled>connect lab</TitleStyled>
             </HeaderStyled>
             
