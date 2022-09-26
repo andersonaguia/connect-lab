@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup'
 import YupPassword from "yup-password"; 
 import * as yup from "yup";
-import { checkCep } from "../../services/checkCEP";
+import { checkCep } from "../../services/checkCep";
 import { createUser } from "../../services/CreateUser";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
