@@ -1,14 +1,7 @@
 import PropTypes from "prop-types";
 import { CustomThemeContext } from "./CustomThemeContext";
 import { useEffect, useState } from "react";
-// import {
-//   getTheme as getThemeLocalStorage,
-//   setTheme as setThemeLocalStorage,
-// } from "../../utils/localStorage/";
-
 import { getTheme, setTheme } from "../../utils/localStorage/localStorage";
-
-
 import { themeLight } from "../../themes/themeLight";
 import { themeDark } from "../../themes/themeDark";
 

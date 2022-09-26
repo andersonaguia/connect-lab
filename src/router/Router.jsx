@@ -4,7 +4,6 @@ import { Cadastro } from '../pages/Cadastro/Cadastro'
 import { Inicio } from "../pages/Inicio/Inicio"
 import { Dispositivos } from '../pages/Dispositivos/Dispositivos'
 import { Perfil } from "../pages/Perfil/Perfil"
-import { Detalhes } from "../pages/Detalhes/Detalhes"
 import { useAuthentication } from "../contexts/Authentication/useAuthentication"
 
 export const Router = () => {
@@ -21,8 +20,7 @@ const { isAuthenticated } = useAuthentication()
             <Route path="/cadastro" element={<Cadastro />} />
             <Route path="/inicio" element={<Inicio />} />
             <Route path="/dispositivos" element={<Dispositivos />} />
-            <Route path="/perfil" element={<Perfil />} />
-            <Route path="/detalhes" element={<Detalhes />}/>           
+            <Route path="/perfil" element={<Perfil />} />        
           </>          
         ) :
         (

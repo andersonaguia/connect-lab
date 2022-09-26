@@ -14,8 +14,7 @@ export const AuthenticationProvider = ({ children }) => {
 
   const handleLogin = (data) => {     
     userLogin(data)
-        .then((response) => {            
-            console.log("RESPONSE: ", response)
+        .then((response) => {
             sessionStorage.setItem('userData', JSON.stringify(response.data)); 
             toast.success("Sucesso! Entrando no site")  
             setIsLoading(!isLoading)                 

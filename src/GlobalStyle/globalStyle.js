@@ -10,8 +10,8 @@ export const GlobalStyle = createGlobalStyle`
  * 1. Correct the line height in all browsers.
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
- /* @import url('https://fonts.googleapis.com/css2?family=MuseoModerno:wght@600&display=swap');
- @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap'); */
+ @import url('https://fonts.googleapis.com/css2?family=MuseoModerno:wght@600&display=swap');
+ @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap'); 
 html {
   line-height: 1.5; /* 1 */
   -webkit-text-size-adjust: 100%; /* 2 */

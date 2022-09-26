@@ -48,7 +48,7 @@ export const HeaderStyled = styled.header`
 `
 
 export const TitleStyled = styled.h1`
-    color: ${({ theme }) => theme.colors.text.p};
+    color: ${({ theme }) => theme.colors.text.primary};
 `
 export const ImgStyled = styled.img`
     width: 40px;

@@ -49,11 +49,11 @@ const schema = yup.object({
 export const Cadastro = () => {    
     const { register, handleSubmit, trigger, setValue, setFocus, reset, formState:{ errors } } = useForm({
         resolver: yupResolver(schema)
-    }); 
-    const navigate = useNavigate()
-    const { isAuthenticated, } = useAuthentication()
+    });     
+    const { isAuthenticated, handleLogin } = useAuthentication()
     const [enterData, setEnterData] = useState(true)    
     const [ isLoading, setIsLoading ] = useState(true)
+    const navigate = useNavigate()
 
     useEffect(() => {
         setIsLoading(false)
@@ -82,11 +82,13 @@ export const Cadastro = () => {
         if(isAuthenticated){
             updateUser(isAuthenticated.token, isAuthenticated.user._id, body)
             .then((response) => {
-                toast.success("Dados atualizados com sucesso!")           
-                console.log("RESPONSE: ", response)
-                sessionStorage.setItem('userData', JSON.stringify(response.data));
-                console.log("USER DATA: ")               
-                navigate('/login')           
+                toast.success("Dados atualizados com sucesso!") 
+                sessionStorage.clear();
+                reset() 
+                handleLogin()
+                setTimeout(() => {
+                    navigate('/login')
+                }, 2000);                      
             })
             .catch((error) => {
                 console.error("Erro: ", error.code)
@@ -98,12 +100,14 @@ export const Cadastro = () => {
          }
           else{
              createUser(body) 
-             .then((response) => {                           
-                console.log("RESPONSE: ", response)
+             .then((response) => {       
                 sessionStorage.setItem('userData', JSON.stringify(response.data));
                 console.log("USER DATA: ")                
                 toast.success("Usuário cadastrado com sucesso!") 
-                reset()                              
+                reset() 
+                setTimeout(() => {
+                    navigate('/login')
+                }, 2000);                               
             })
             .catch((error) => {
                 console.error("Erro: ", error.code)

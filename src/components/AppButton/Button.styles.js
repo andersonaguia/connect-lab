@@ -8,8 +8,8 @@ export const ButtonStyled = styled.button`
     align-items: center;
     text-transform: uppercase;
     border-radius: 40px;
-    background-color: ${({theme}) => theme.colors.brand.green};;
-    color: ${({ theme }) => theme.colors.text.primary};;
+    background-color: ${({theme}) => theme.colors.brand.green};
+    color: ${({ theme }) => theme.colors.text.primary};
     border: none;
     cursor: pointer;
 

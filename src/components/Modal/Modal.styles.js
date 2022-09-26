@@ -6,7 +6,7 @@ export const OverlayStyled = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, .7);
+    background-color: ${({theme}) => theme.colors.overlay.black};
     z-index: 1000;
 `
 
@@ -25,7 +25,7 @@ export const ModalStyled = styled.div`
     border-radius: 5px;
     padding: 50px;
     z-index: 1000;
-    color: ${({ theme }) => theme.colors.text.secondary};
+    color: ${({ theme }) => theme.colors.text.primary};
 
     & p{
         font-size: 0.6rem;

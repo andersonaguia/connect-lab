@@ -22,7 +22,6 @@ export const ProductsProvider = ({ children }) => {
     const navigate = useNavigate()
 
     const handleSearch = (device) => {
-        console.log(device)
         setStatusDevice(() => !statusDevice)
         setSearch(() => device)
         setControl(() => false)

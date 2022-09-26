@@ -6,7 +6,6 @@ import { useState } from 'react'
 import { Modal } from '../../Modal/Modal'
 import { useForm } from "react-hook-form";
 import { useAuthentication } from '../../../contexts/Authentication/useAuthentication'
-// import { addDevice } from '../../../utils/addDevice'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from "yup";
 import { toast, ToastContainer } from 'react-toastify';

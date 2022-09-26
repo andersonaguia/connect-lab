@@ -34,8 +34,6 @@ export const Inicio = () => {
     useEffect(() => {
         handleLocals()
     }, [isLoading])
-    console.log("USER DEVICES: ", allUserDevices)
-    console.log("USER LOCALS: ", userLocals)
       
     return(       
         <DivStyled> 
