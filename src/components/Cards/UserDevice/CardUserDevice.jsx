@@ -33,7 +33,7 @@ export const CardUserDevice = ({ device }) => {
                 </DivStyled>
                 <DivButtonStyled className="btn">                
                     <ButtonStyled onClick={()=>setIsOpen(true)}
-                        image="../../../../public/info.png" 
+                        image="../../../assets/images/info.png" 
                         className="info"
                     />
                     <ButtonStyled 
